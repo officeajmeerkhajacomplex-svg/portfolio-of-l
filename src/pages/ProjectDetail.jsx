@@ -1,4 +1,4 @@
-import { Link, Navigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, ArrowUpRight, MoveUpRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { projects, siteConfig } from '../data';
@@ -7,7 +7,7 @@ import ProjectArtwork from '../components/ProjectArtwork';
 export default function ProjectDetail() {
   const { slug } = useParams();
   const project = projects.find((item) => item.slug === slug);
-  if (!project) return <Navigate to="/work" replace />;
+  if (!project) return <main className="inner-page page-gutter"><div className="page-kicker"><Link to="/work"><ArrowLeft size={14} /> Back to selected work</Link><span>PROJECT NOT FOUND</span></div><section className="not-found-content"><span className="eyebrow"><span className="eyebrow-dot" /> THIS PROJECT HAS MOVED</span><h1>Nothing here<br /><em>just yet.</em></h1><p>This project link may be outdated. Explore the work that's currently available.</p><Link className="button button-primary" to="/work"><ArrowLeft size={16} /> Explore selected work</Link></section></main>;
   const currentIndex = projects.findIndex((item) => item.slug === slug);
   const nextProject = projects[(currentIndex + 1) % projects.length];
   return (
