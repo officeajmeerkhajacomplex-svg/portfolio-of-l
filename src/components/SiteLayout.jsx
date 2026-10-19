@@ -70,7 +70,7 @@ export function Footer() {
         <div className="footer-side">
           <span className="footer-side-label">A LITTLE BIT OF EVERYTHING.<br />A LOT OF INTENTION.</span>
           <Link to="/work" className="footer-side-link">Explore selected work <ArrowUpRight size={16} /></Link>
-          <a className="footer-side-link" href="/resume.pdf" download="LIYAQAT-Resume.pdf">Download résumé <Download size={16} /></a>
+          <a className="footer-side-link" href={`${import.meta.env.BASE_URL}resume.pdf`} download="LIYAQAT-Resume.pdf">Download résumé <Download size={16} /></a>
           <a className="footer-side-link" href={`mailto:${siteConfig.email}`}>Send an email <ArrowUpRight size={16} /></a>
           <span className="footer-stamp">L<span>®</span></span>
         </div>
