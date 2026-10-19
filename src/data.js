@@ -1,7 +1,7 @@
 // Update these details before publishing your portfolio.
 export const siteConfig = {
   name: 'LIYAQAT',
-  email: 'your-email@example.com',
+  email: 'liyaqathaleef404@gmail.com',
   availability: 'Open to select projects',
   location: 'Available worldwide · Based in India',
   instagram: '',
