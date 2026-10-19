@@ -662,3 +662,13 @@ img, svg { display: block; }
   .loader-lottie { animation: none !important; }
   .loader-skip span { transition: none !important; }
 }
+
+
+/* Not-found state: keep the existing editorial visual language. */
+.not-found-page { min-height: 58vh; }
+.not-found-content { max-width: 850px; padding: clamp(72px, 12vw, 150px) 0 clamp(80px, 12vw, 150px); }
+.not-found-content h1 { margin: 22px 0; font-size: clamp(54px, 9vw, 112px); font-weight: 500; letter-spacing: -.085em; line-height: .98; }
+.not-found-content h1 em { color: var(--accent); font-style: normal; }
+.not-found-content > p { max-width: 440px; color: var(--muted); font-size: 15px; line-height: 1.8; }
+.not-found-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 14px; margin-top: 28px; }
+.not-found-actions .button { text-decoration: none; }

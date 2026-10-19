@@ -10,10 +10,13 @@ import ProjectDetail from './pages/ProjectDetail';
 import About from './pages/About';
 import Services from './pages/Services';
 import Contact from './pages/Contact';
+import NotFound from './pages/NotFound';
+import { projects } from './data';
 
 function RouteAnnouncer() {
   const location = useLocation();
   useEffect(() => {
+    const path = location.pathname.replace(/\/+$/, '') || '/';
     const titles = {
       '/': 'LIYAQAT® — Digital, with feeling.',
       '/work': 'Selected Work — LIYAQAT®',
@@ -21,7 +24,15 @@ function RouteAnnouncer() {
       '/services': 'Services — LIYAQAT®',
       '/contact': 'Contact — LIYAQAT®',
     };
-    document.title = titles[location.pathname] || 'Project — LIYAQAT®';
+
+    if (path.startsWith('/work/')) {
+      const slug = path.slice('/work/'.length);
+      const project = projects.find((item) => item.slug === slug);
+      document.title = project ? `${project.title} — LIYAQAT®` : 'Page not found — LIYAQAT®';
+      return;
+    }
+
+    document.title = titles[path] || 'Page not found — LIYAQAT®';
   }, [location.pathname]);
   return null;
 }
@@ -46,7 +57,7 @@ export default function App() {
               <Route path="/about" element={<About />} />
               <Route path="/services" element={<Services />} />
               <Route path="/contact" element={<Contact />} />
-              <Route path="*" element={<Work />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </PageTransition>
         </AnimatePresence>
