@@ -14,8 +14,8 @@ export default function ProjectCard({ project, index = 0 }) {
   const handlePointerMove = (event) => {
     if (reduceMotion || event.pointerType === 'touch') return;
     const rect = event.currentTarget.getBoundingClientRect();
-    pointerX.set((event.clientY - rect.top) / rect.height);
-    pointerY.set((event.clientX - rect.left) / rect.width);
+    pointerX.set((event.clientX - rect.left) / rect.width);
+    pointerY.set((event.clientY - rect.top) / rect.height);
   };
 
   const resetPointer = () => {
