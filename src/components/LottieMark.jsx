@@ -32,7 +32,7 @@ export default function LottieMark({ src, className = '' }) {
           <Lottie
             src={src}
             autoplay
-            loop
+            loop={false}
             rendererSettings={{ preserveAspectRatio: 'xMidYMid meet', progressiveLoad: true }}
           />
         </Suspense>
