@@ -26,7 +26,7 @@ export default function LottieMark({ src, className = '' }) {
   }, [reduceMotion]);
 
   return (
-    <span ref={ref} className={`lottie-mark ${className}`} aria-hidden="true">
+    <div ref={ref} className={`lottie-mark ${className}`} aria-hidden="true">
       {isVisible && !reduceMotion ? (
         <Suspense fallback={<span className="lottie-mark-fallback">✳</span>}>
           <Lottie
@@ -39,6 +39,6 @@ export default function LottieMark({ src, className = '' }) {
       ) : (
         <span className="lottie-mark-fallback">✳</span>
       )}
-    </span>
+    </div>
   );
 }
