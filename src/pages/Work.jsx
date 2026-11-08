@@ -35,7 +35,7 @@ export default function Work() {
         <span><span className="tiny-live-dot" /> {String(visibleProjects.length).padStart(2, '0')} SELECTED CONCEPTS</span>
         <span>DESIGN · DIGITAL · MOTION</span>
       </div>
-      <div className="work-filter-controls" role="group" aria-label="Filter projects">
+      <div className="work-filter-controls flex flex-wrap items-center gap-2.5" role="group" aria-label="Filter projects">
         {filters.map((filter) => (
           <button
             key={filter}

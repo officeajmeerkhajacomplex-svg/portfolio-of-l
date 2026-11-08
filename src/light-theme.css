@@ -385,13 +385,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 
 
 /* Interactive portfolio filters */
-.work-filter-controls {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 9px;
-  margin: 20px 0 28px;
-}
+.work-filter-controls { margin: 20px 0 28px; }
 .work-filter-chip {
   display: inline-flex;
   align-items: center;
@@ -435,7 +429,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   font-size: 13px;
 }
 @media (max-width: 760px) {
-  .work-filter-controls { gap: 7px; margin: 16px 0 22px; }
+  .work-filter-controls { margin: 16px 0 22px; }
   .work-filter-chip { min-height: 35px; padding: 7px 12px; font-size: 10px; }
 }
 
@@ -454,3 +448,20 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 }
 .service-detail-arrow:hover { color: #fff; }
 .capability-cloud span:hover { color: #fff; }
+
+/* Magic Card-inspired pointer spotlight, layered over original artwork. */
+.project-art-wrap { --spotlight-x: 50%; --spotlight-y: 50%; }
+.project-art-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(300px circle at var(--spotlight-x) var(--spotlight-y), rgba(255,255,255,.34), transparent 65%);
+  transition: opacity .28s ease;
+}
+.project-card:hover .project-art-wrap::after { opacity: 1; }
+@media (hover: none), (pointer: coarse) {
+  .project-art-wrap::after { display: none; }
+}
