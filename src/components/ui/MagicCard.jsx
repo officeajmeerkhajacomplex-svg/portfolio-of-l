@@ -1,12 +1,8 @@
-import { useRef } from 'react';
-
 /**
  * A LIYAQAT-tuned Magic Card pattern: the pointer controls a soft spotlight
  * and a restrained gradient edge, while the card content remains semantic.
  */
 export default function MagicCard({ children, className = '' }) {
-  const ref = useRef(null);
-
   const handlePointerMove = (event) => {
     if (event.pointerType === 'touch') return;
     const bounds = event.currentTarget.getBoundingClientRect();
@@ -25,7 +21,6 @@ export default function MagicCard({ children, className = '' }) {
 
   return (
     <div
-      ref={ref}
       className={`magic-card ${className}`}
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
