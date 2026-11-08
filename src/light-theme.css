@@ -382,3 +382,59 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 @media (prefers-reduced-motion: reduce) {
   .hero-art, .project-art-wrap, .service-row, .button { transition-duration: .01ms !important; }
 }
+
+
+/* Interactive portfolio filters */
+.work-filter-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin: 20px 0 28px;
+}
+.work-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 38px;
+  padding: 8px 14px;
+  border: 1px solid rgba(45,49,40,.08);
+  border-radius: 999px;
+  color: #62685e;
+  background: #f2f1eb;
+  box-shadow: 4px 5px 11px rgba(45,47,39,.055), -4px -4px 10px rgba(255,255,255,.82);
+  font-size: 11px;
+  cursor: pointer;
+  transition: transform .25s var(--ease), color .25s ease, background .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.work-filter-chip:hover {
+  transform: translateY(-2px);
+  color: var(--ink);
+  border-color: rgba(255,98,77,.22);
+}
+.work-filter-chip.active {
+  color: #fff;
+  background: var(--ink);
+  border-color: var(--ink);
+  box-shadow: 0 7px 16px rgba(32,34,30,.13), inset 0 1px 0 rgba(255,255,255,.12);
+}
+.filter-count {
+  display: inline-grid;
+  min-width: 21px;
+  height: 21px;
+  place-items: center;
+  padding: 0 5px;
+  border-radius: 999px;
+  color: #fff;
+  background: rgba(255,255,255,.16);
+  font: 8px var(--mono);
+}
+.work-empty {
+  margin: 20px 0 38px;
+  color: var(--muted);
+  font-size: 13px;
+}
+@media (max-width: 760px) {
+  .work-filter-controls { gap: 7px; margin: 16px 0 22px; }
+  .work-filter-chip { min-height: 35px; padding: 7px 12px; font-size: 10px; }
+}
