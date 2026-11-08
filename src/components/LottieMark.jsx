@@ -1,7 +1,7 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { useReducedMotion } from 'framer-motion';
 
-const Lottie = lazy(() => import('lottie-react').then((module) => ({ default: module.LottieLight })));
+const Lottie = lazy(() => import('./LightLottiePlayer'));
 
 export default function LottieMark({ src, className = '' }) {
   const ref = useRef(null);
