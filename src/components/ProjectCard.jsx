@@ -15,8 +15,22 @@ export default function ProjectCard({ project, index = 0 }) {
     const rect = event.currentTarget.getBoundingClientRect();
     pointerX.set((event.clientX - rect.left) / rect.width);
     pointerY.set((event.clientY - rect.top) / rect.height);
+    const artwork = event.currentTarget.querySelector('.project-art-wrap');
+    const artworkRect = artwork?.getBoundingClientRect();
+    if (artwork && artworkRect) {
+      artwork.style.setProperty('--spotlight-x', `${event.clientX - artworkRect.left}px`);
+      artwork.style.setProperty('--spotlight-y', `${event.clientY - artworkRect.top}px`);
+    }
   };
-  const resetPointer = () => { pointerX.set(0.5); pointerY.set(0.5); };
+  const resetPointer = (event) => {
+    pointerX.set(0.5);
+    pointerY.set(0.5);
+    const artwork = event.currentTarget.querySelector('.project-art-wrap');
+    if (artwork) {
+      artwork.style.setProperty('--spotlight-x', '50%');
+      artwork.style.setProperty('--spotlight-y', '50%');
+    }
+  };
 
   return (
     <motion.article
