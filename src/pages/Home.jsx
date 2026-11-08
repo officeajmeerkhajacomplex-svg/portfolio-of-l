@@ -5,9 +5,12 @@ import { motion, useMotionValue, useSpring, useTransform, useScroll, useReducedM
 import { projects, services, siteConfig } from '../data';
 import ProjectCard from '../components/ProjectCard';
 import ScrollReveal from '../components/ScrollReveal';
+import LottieMark from '../components/LottieMark';
+import orbitMark from '../assets/orbit-mark.json';
 
 function HeroObject() {
   const ref = useRef(null);
+  const reduceMotion = useReducedMotion();
   const rawX = useMotionValue(0);
   const rawY = useMotionValue(0);
   const rotateX = useSpring(useTransform(rawY, [-0.5, 0.5], [12, -12]), { stiffness: 80, damping: 18 });
@@ -30,14 +33,14 @@ function HeroObject() {
   return (
     <div className="hero-art" ref={ref} onPointerMove={handleMove} onPointerLeave={reset} role="img" aria-label="Interactive abstract 3D-inspired artwork">
       <div className="hero-art-caption"><span>FIG. 001</span><span>FORM FOLLOWS FEELING</span></div>
-      <motion.div className="hero-orbital orbital-a" animate={{ rotate: 360 }} transition={{ duration: 36, repeat: Infinity, ease: 'linear' }} />
-      <motion.div className="hero-orbital orbital-b" animate={{ rotate: -360 }} transition={{ duration: 48, repeat: Infinity, ease: 'linear' }} />
+      <motion.div className="hero-orbital orbital-a" animate={reduceMotion ? undefined : { rotate: 360 }} transition={{ duration: 52, repeat: Infinity, ease: 'linear' }} />
+      <motion.div className="hero-orbital orbital-b" animate={reduceMotion ? undefined : { rotate: -360 }} transition={{ duration: 68, repeat: Infinity, ease: 'linear' }} />
       <motion.div className="hero-object" style={{ rotateX, rotateY }}>
         <div className="object-core"><span className="object-shine" /><span className="object-cut" /></div>
         <span className="object-ring ring-a" /><span className="object-ring ring-b" />
       </motion.div>
-      <motion.div className="hero-floating-square" animate={{ y: [0, -10, 0], rotate: [0, 6, 0] }} transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}><span>✳</span></motion.div>
-      <motion.div className="hero-floating-chip" animate={{ y: [0, 11, 0], rotate: [0, -4, 0] }} transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 0.3 }}>IDEAS<br />IN MOTION<span>↗</span></motion.div>
+      <motion.div className="hero-floating-square" animate={reduceMotion ? undefined : { y: [0, -7, 0], rotate: [0, 4, 0] }} transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}><span>✳</span></motion.div>
+      <motion.div className="hero-floating-chip" animate={reduceMotion ? undefined : { y: [0, 7, 0], rotate: [0, -2, 0] }} transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 0.3 }}>IDEAS<br />IN MOTION<span>↗</span></motion.div>
       <span className="hero-art-foot">DESIGN × CODE × FEELING</span>
       <span className="hero-cross cross-a">+</span><span className="hero-cross cross-b">+</span>
     </div>
@@ -66,7 +69,7 @@ export default function Home() {
     <main>
       <section ref={heroRef} className="hero-section page-gutter">
         <div className="hero-copy">
-          <motion.div className="eyebrow hero-eyebrow" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}><span className="eyebrow-dot" /> INDEPENDENT CREATIVE DEVELOPER & DESIGNER</motion.div>
+          <motion.div className="eyebrow hero-eyebrow" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}><span className="eyebrow-dot" /> INDEPENDENT CREATIVE DEVELOPER & DESIGNER<LottieMark src={orbitMark} className="hero-lottie-mark" /></motion.div>
           <motion.h1 aria-label="Digital experiences with feeling." initial="hidden" animate="visible" variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.15, delayChildren: 0.16 } } }}>
             <span className="kinetic-line" aria-hidden="true"><motion.span variants={titleLineVariants}>Digital</motion.span></span>
             <span className="kinetic-line" aria-hidden="true"><motion.span className="hero-title-outline" variants={titleLineVariants}>experiences</motion.span></span>
