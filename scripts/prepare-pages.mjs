@@ -45,10 +45,10 @@ function pageHtmlFor(route) {
   const description = escapeAttribute(meta.description);
 
   return html
-    .replace(/<title>[\\s\\S]*?<\\/title>/, `<title>${title}</title>`)
-    .replace(/(<meta name="description" content=")[^"]*("\\s*\\/>)/, `$1${description}$2`)
-    .replace(/(<meta property="og:title" content=")[^"]*("\\s*\\/>)/, `$1${title}$2`)
-    .replace(/(<meta property="og:description" content=")[^"]*("\\s*\\/>)/, `$1${description}$2`);
+    .replace(/<title>[\s\S]*?<\/title>/, `<title>${title}</title>`)
+    .replace(/(<meta name="description" content=")[^"]*("\s*\/?>)/, `$1${description}$2`)
+    .replace(/(<meta property="og:title" content=")[^"]*("\s*\/?>)/, `$1${title}$2`)
+    .replace(/(<meta property="og:description" content=")[^"]*("\s*\/?>)/, `$1${description}$2`);
 }
 
 // GitHub Pages serves directory index files with HTTP 200. Generate a small
