@@ -1,4 +1,4 @@
-import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { LottieLight } from 'lottie-react';
 import loaderAnimation from '../assets/liyaqat-loader.json';
@@ -65,15 +65,13 @@ export default function IntroLoader({ onComplete }) {
       <div className="loader-center">
         <div className="loader-side-note loader-note-left">DESIGN<br />×<br />CODE</div>
         <div className="loader-animation" aria-hidden="true">
-          <Suspense fallback={<span className="loader-mark-fallback">✳</span>}>
-            <LottieLight
-              src={loaderAnimation}
-              autoplay={!reduceMotion}
-              loop={false}
-              className="loader-lottie"
-              rendererSettings={{ preserveAspectRatio: 'xMidYMid meet', progressiveLoad: true }}
-            />
-          </Suspense>
+          <LottieLight
+            src={loaderAnimation}
+            autoplay={!reduceMotion}
+            loop={false}
+            className="loader-lottie"
+            rendererSettings={{ preserveAspectRatio: 'xMidYMid meet', progressiveLoad: true }}
+          />
         </div>
         <div className="loader-side-note loader-note-right">IDEAS<br />IN<br />MOTION</div>
         <motion.h1 className="loader-wordmark" initial={{ opacity: 0, y: 20, filter: 'blur(8px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }} transition={{ delay: 0.12, duration: reduceMotion ? 0.01 : 0.48, ease: [0.22, 1, 0.36, 1] }}>LIYAQAT<span>®</span></motion.h1>
