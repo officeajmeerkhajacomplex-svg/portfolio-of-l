@@ -53,7 +53,7 @@ export default function Work() {
         {visibleProjects.map((project, index) => <ProjectCard key={project.slug} project={project} index={index} />)}
       </motion.div>
       {visibleProjects.length === 0 && <p className="work-empty">No projects in this category yet. Check back soon.</p>}
-      <div className="work-disclaimer"><Sparkles size={16} /><p><strong>A quick note:</strong> The projects shown here are concept explorations, not commissioned client work. They’re a starting point for showing my approach to visual thinking, interaction, and craft.</p></div>
+      <div className="work-disclaimer ui-raised"><Sparkles size={16} /><p><strong>A quick note:</strong> The projects shown here are concept explorations, not commissioned client work. They’re a starting point for showing my approach to visual thinking, interaction, and craft.</p></div>
       <section className="work-bottom-cta"><div><span className="eyebrow">YOUR IDEA COULD BE NEXT</span><h2>Let’s make a<br /><em>new favourite.</em></h2></div><Link className="circle-link" to="/contact" aria-label="Start a project"><ArrowDownRight size={24} /></Link></section>
     </main>
   );
