@@ -38,7 +38,7 @@ function RouteLoading() {
 function RouteAnnouncer() {
   const location = useLocation();
   useEffect(() => {
-    const path = location.pathname.replace(/\\/+$/, '') || '/';
+    const path = location.pathname.replace(/\/+$/, '') || '/';
     const titles = {
       '/': 'LIYAQAT® — Digital, with feeling.',
       '/work': 'Selected Work — LIYAQAT®',
