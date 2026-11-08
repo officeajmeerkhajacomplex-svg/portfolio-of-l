@@ -1,21 +1,19 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
+import { projects } from '../src/data.js';
 
 const outputDirectory = join(process.cwd(), 'dist');
 const sourceIndex = join(outputDirectory, 'index.html');
 const html = await readFile(sourceIndex, 'utf8');
 
 // GitHub Pages serves directory index files with HTTP 200. Generate a small
-// SPA entry for every real route instead of relying on the 404.html workaround.
+// SPA entry for each real route, including project slugs from the source data.
 const routes = [
   'work',
   'about',
   'services',
   'contact',
-  'work/forma-living',
-  'work/after-hours',
-  'work/good-things-club',
-  'work/signal-studio',
+  ...projects.map((project) => `work/${project.slug}`),
 ];
 
 for (const route of routes) {
