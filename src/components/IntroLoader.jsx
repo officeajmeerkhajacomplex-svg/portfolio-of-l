@@ -2,7 +2,7 @@ import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion';
 import loaderAnimation from '../assets/liyaqat-loader.json';
 
-const Lottie = lazy(() => import('lottie-react').then((module) => ({ default: module.Lottie })));
+const Lottie = lazy(() => import('lottie-react').then((module) => ({ default: module.LottieLight })));
 const FULL_INTRO_MS = 1150;
 const EXIT_MS = 420;
 
