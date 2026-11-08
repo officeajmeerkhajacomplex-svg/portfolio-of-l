@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { Lottie } from 'lottie-react';
 import loaderAnimation from '../assets/liyaqat-loader.json';
 
-const FULL_INTRO_MS = 2500;
-const EXIT_MS = 650;
+const Lottie = lazy(() => import('lottie-react').then((module) => ({ default: module.Lottie })));
+const FULL_INTRO_MS = 1150;
+const EXIT_MS = 420;
 
 export default function IntroLoader({ onComplete }) {
   const reduceMotion = useReducedMotion();
@@ -12,7 +12,7 @@ export default function IntroLoader({ onComplete }) {
   const [leaving, setLeaving] = useState(false);
   const finished = useRef(false);
   const timers = useRef({ progress: null, exit: null, remove: null });
-  const duration = reduceMotion ? 520 : FULL_INTRO_MS;
+  const duration = reduceMotion ? 160 : FULL_INTRO_MS;
   const exitDuration = reduceMotion ? 0.12 : EXIT_MS / 1000;
 
   const finish = useCallback(() => {
@@ -22,7 +22,7 @@ export default function IntroLoader({ onComplete }) {
     window.clearTimeout(timers.current.exit);
     setProgress(100);
     setLeaving(true);
-    timers.current.remove = window.setTimeout(onComplete, exitDuration * 1000 + 50);
+    timers.current.remove = window.setTimeout(onComplete, exitDuration * 1000 + 40);
   }, [onComplete, exitDuration]);
 
   useEffect(() => {
@@ -30,7 +30,7 @@ export default function IntroLoader({ onComplete }) {
     timers.current.progress = window.setInterval(() => {
       const next = Math.min(99, Math.round(((Date.now() - startedAt) / duration) * 100));
       setProgress(next);
-    }, 55);
+    }, 40);
     timers.current.exit = window.setTimeout(finish, duration);
 
     const handleKey = (event) => {
@@ -65,17 +65,19 @@ export default function IntroLoader({ onComplete }) {
       <div className="loader-center">
         <div className="loader-side-note loader-note-left">DESIGN<br />×<br />CODE</div>
         <div className="loader-animation" aria-hidden="true">
-          <Lottie
-            src={loaderAnimation}
-            autoplay={!reduceMotion}
-            loop={false}
-            className="loader-lottie"
-            rendererSettings={{ preserveAspectRatio: 'xMidYMid meet', progressiveLoad: true }}
-          />
+          <Suspense fallback={<span className="loader-mark-fallback">✳</span>}>
+            <Lottie
+              src={loaderAnimation}
+              autoplay={!reduceMotion}
+              loop={false}
+              className="loader-lottie"
+              rendererSettings={{ preserveAspectRatio: 'xMidYMid meet', progressiveLoad: true }}
+            />
+          </Suspense>
         </div>
         <div className="loader-side-note loader-note-right">IDEAS<br />IN<br />MOTION</div>
-        <motion.h1 className="loader-wordmark" initial={{ opacity: 0, y: 20, filter: 'blur(8px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }} transition={{ delay: 0.22, duration: reduceMotion ? 0.01 : 0.65, ease: [0.22, 1, 0.36, 1] }}>LIYAQAT<span>®</span></motion.h1>
-        <motion.p className="loader-tagline" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.42, duration: reduceMotion ? 0.01 : 0.45 }}>MAKING DIGITAL FEEL <em>A LITTLE DIFFERENT.</em></motion.p>
+        <motion.h1 className="loader-wordmark" initial={{ opacity: 0, y: 20, filter: 'blur(8px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }} transition={{ delay: 0.12, duration: reduceMotion ? 0.01 : 0.48, ease: [0.22, 1, 0.36, 1] }}>LIYAQAT<span>®</span></motion.h1>
+        <motion.p className="loader-tagline" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2, duration: reduceMotion ? 0.01 : 0.32 }}>MAKING DIGITAL FEEL <em>A LITTLE DIFFERENT.</em></motion.p>
       </div>
 
       <div className="loader-bottomline">
