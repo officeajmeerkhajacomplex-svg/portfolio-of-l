@@ -1,8 +1,8 @@
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
+import { LottieLight } from 'lottie-react';
 import loaderAnimation from '../assets/liyaqat-loader.json';
 
-const Lottie = lazy(() => import('lottie-react').then((module) => ({ default: module.LottieLight })));
 const FULL_INTRO_MS = 1150;
 const EXIT_MS = 420;
 
@@ -66,7 +66,7 @@ export default function IntroLoader({ onComplete }) {
         <div className="loader-side-note loader-note-left">DESIGN<br />×<br />CODE</div>
         <div className="loader-animation" aria-hidden="true">
           <Suspense fallback={<span className="loader-mark-fallback">✳</span>}>
-            <Lottie
+            <LottieLight
               src={loaderAnimation}
               autoplay={!reduceMotion}
               loop={false}
