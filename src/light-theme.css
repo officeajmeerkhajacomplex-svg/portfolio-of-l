@@ -438,3 +438,19 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   .work-filter-controls { gap: 7px; margin: 16px 0 22px; }
   .work-filter-chip { min-height: 35px; padding: 7px 12px; font-size: 10px; }
 }
+
+
+/* Contrast fixes for controls whose original dark-theme foreground used --bg. */
+.circle-link {
+  color: #fff;
+  box-shadow: 0 8px 19px rgba(210,77,57,.16), inset 0 1px 0 rgba(255,255,255,.22);
+}
+.circle-link:hover { color: var(--accent-dark); background: #fff; border-color: #fff; }
+.contact-sticker {
+  color: #382c28;
+  border: 1px solid rgba(255,255,255,.35);
+  border-radius: 17px;
+  box-shadow: 7px 9px 20px rgba(188,75,57,.13), inset 0 1px 0 rgba(255,255,255,.25);
+}
+.service-detail-arrow:hover { color: #fff; }
+.capability-cloud span:hover { color: #fff; }
