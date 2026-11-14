@@ -43,8 +43,9 @@ export default function useEditorialMotion() {
     const element = root.current;
     if (!element) return undefined;
 
+    let media;
     const context = gsap.context(() => {
-      const media = gsap.matchMedia();
+      media = gsap.matchMedia();
 
       media.add('(prefers-reduced-motion: no-preference)', () => {
         const hero = element.querySelector('.editorial-hero');
@@ -131,7 +132,10 @@ export default function useEditorialMotion() {
       });
     }, element);
 
-    return () => context.revert();
+    return () => {
+      media?.revert();
+      context.revert();
+    };
   }, []);
 
   return root;
