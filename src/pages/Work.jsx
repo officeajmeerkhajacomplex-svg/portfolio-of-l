@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { projects } from '../data';
 import useEditorialMotion from '../hooks/useEditorialMotion';
-import { Flip, gsap } from '../lib/gsap';
+import { Flip } from '../lib/gsap';
 import ProjectCard from '../components/ProjectCard';
 
 const filters = ['All work', 'Digital', 'Identity', 'Motion'];
@@ -65,7 +65,7 @@ export default function Work() {
           </button>
         ))}
       </div>
-      <div ref={gridRef} key={activeFilter} className="project-grid work-grid">
+      <div ref={gridRef} className="project-grid work-grid">
         {visibleProjects.map((project, index) => <ProjectCard key={project.slug} project={project} index={index} />)}
       </div>
       {visibleProjects.length === 0 && <p className="work-empty">No projects in this category yet. Check back soon.</p>}
