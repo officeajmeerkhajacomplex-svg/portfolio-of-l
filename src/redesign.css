@@ -296,11 +296,10 @@ body::before { opacity: .014; }
   border-bottom: 1px solid rgba(32,34,30,.07);
   transform: rotate(-.65deg);
 }
-.editorial-marquee__track { display: flex; width: max-content; animation: editorial-marquee-scroll 32s linear infinite; }
+.editorial-marquee__track { display: flex; width: max-content; animation: none; }
 .editorial-marquee__set { display: flex; align-items: center; gap: 30px; padding-right: 30px; white-space: nowrap; }
 .editorial-marquee__set b { font-size: 10px; font-weight: 600; letter-spacing: .12em; }
 .editorial-marquee__set i { color: var(--coral-deep); font-size: 15px; font-style: normal; }
-@keyframes editorial-marquee-scroll { to { transform: translateX(-50%); } }
 
 /* Shared editorial section headings and work grid. */
 .redesign-section { padding-top: clamp(90px, 11vw, 158px); padding-bottom: clamp(90px, 11vw, 150px); }
@@ -872,7 +871,7 @@ body::before { opacity: .014; }
 
 /* Fine pointer only. Touch users get simple, stable controls. */
 @media (hover: hover) and (pointer: fine) {
-  .editorial-marquee__track:hover { animation-play-state: paused; }
+  .editorial-marquee__track:hover { cursor: default; }
 }
 @media (prefers-reduced-motion: reduce) {
   .editorial-marquee__track { animation: none; }
