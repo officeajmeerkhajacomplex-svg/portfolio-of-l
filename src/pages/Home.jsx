@@ -158,7 +158,7 @@ export default function Home() {
           link={<Link className="editorial-text-link" to="/work">View all work <ArrowUpRight size={15} /></Link>}
         />
         <div className="project-grid redesign-project-grid">
-          {projects.slice(0, 3).map((project, index) => (
+          {projects.map((project, index) => (
             <ProjectCard key={project.slug} project={project} index={index} />
           ))}
         </div>
@@ -178,6 +178,7 @@ export default function Home() {
           do more than <em>look good.</em><br />
           It should <span>stay with you.</span>
         </motion.h2>
+        <p className="editorial-manifesto__signature">Good work doesn’t look different. It feels like nothing else.</p>
         <div className="editorial-manifesto__bottom">
           <span>STRATEGY GIVES IT DIRECTION. DESIGN GIVES IT CHARACTER.</span>
           <Link to="/about">A little more about me <ArrowUpRight size={15} /></Link>
