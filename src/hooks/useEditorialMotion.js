@@ -118,6 +118,11 @@ export default function useEditorialMotion() {
           });
         }
 
+        const manifestoMark = element.querySelector('.editorial-manifesto__mark');
+        if (manifestoMark) {
+          gsap.to(manifestoMark, { rotation: 376, duration: 72, repeat: -1, ease: 'none' });
+        }
+
         const marquee = element.querySelector('.editorial-marquee__track');
         if (marquee) {
           gsap.to(marquee, {
