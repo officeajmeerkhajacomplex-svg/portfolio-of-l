@@ -1217,3 +1217,59 @@ html.has-gsap-cursor [role="button"] {
 @media (prefers-reduced-motion: reduce) {
   .custom-cursor { display: none !important; }
 }
+
+
+/* Restored editorial notes from the earlier home concept, integrated into the new layout. */
+.editorial-hero__personal-note {
+  width: 100%;
+  max-width: 620px;
+  margin: 10px auto 0;
+  color: var(--quiet-ink);
+  font: 8px var(--mono-face);
+  letter-spacing: .12em;
+  text-align: right;
+}
+.editorial-contact-cta {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.editorial-contact-cta::before,
+.editorial-contact-cta::after {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  right: -4%;
+  aspect-ratio: 1;
+  border: 1px solid rgba(255,98,77,.15);
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+.editorial-contact-cta::before {
+  width: clamp(300px, 39vw, 610px);
+  box-shadow: 0 0 0 28px rgba(255,98,77,.025), 0 0 0 56px rgba(255,98,77,.02);
+}
+.editorial-contact-cta::after {
+  right: 8%;
+  width: clamp(190px, 24vw, 370px);
+  border-color: rgba(255,255,255,.12);
+}
+.editorial-contact-cta__meta,
+.editorial-contact-cta__body {
+  position: relative;
+  z-index: 1;
+}
+.editorial-contact-cta__aside .editorial-contact-cta__note {
+  margin-top: -8px;
+  margin-bottom: 22px;
+  color: var(--quiet-ink);
+  font-size: 11px;
+  line-height: 1.8;
+}
+@media (max-width: 760px) {
+  .editorial-hero__personal-note { margin-top: 8px; text-align: left; font-size: 7px; }
+  .editorial-contact-cta::before { right: -30%; width: 360px; }
+  .editorial-contact-cta::after { right: -8%; width: 240px; }
+}
