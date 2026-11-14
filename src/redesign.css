@@ -972,3 +972,5 @@ body::before { opacity: .014; }
   .redesign-footer__links { grid-template-columns: 1fr; gap: 26px; }
   .redesign-contact-page .contact-email-button { font-size: 13px; }
 }
+
+.project-card { transform-style: preserve-3d; transform-origin: center; }
