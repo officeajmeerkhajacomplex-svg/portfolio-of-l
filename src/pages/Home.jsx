@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import useEditorialMotion from '../hooks/useEditorialMotion';
 import { Link } from 'react-router-dom';
 import { ArrowDown, ArrowDownRight, ArrowUpRight, MoveUpRight, Sparkles } from 'lucide-react';
 import {
@@ -46,31 +47,15 @@ function HeroObject() {
       aria-label="An abstract sculptural coral form with delicate orbit lines"
     >
       <div className="hero-art-caption"><span>OBJECT STUDY / 001</span><span>FORM FOLLOWS FEELING</span></div>
-      <motion.div
-        className="hero-orbital orbital-a"
-        animate={reduceMotion ? undefined : { rotate: 360 }}
-        transition={{ duration: 64, repeat: Infinity, ease: 'linear' }}
-      />
-      <motion.div
-        className="hero-orbital orbital-b"
-        animate={reduceMotion ? undefined : { rotate: -360 }}
-        transition={{ duration: 84, repeat: Infinity, ease: 'linear' }}
-      />
+      <div className="hero-orbital orbital-a" />
+      <div className="hero-orbital orbital-b" />
       <motion.div className="hero-object" style={reduceMotion ? undefined : { rotateX, rotateY }}>
         <div className="object-core"><span className="object-shine" /><span className="object-cut" /></div>
         <span className="object-ring ring-a" />
         <span className="object-ring ring-b" />
       </motion.div>
-      <motion.div
-        className="hero-floating-square"
-        animate={reduceMotion ? undefined : { y: [0, -6, 0], rotate: [0, 4, 0] }}
-        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-      ><span>✳</span></motion.div>
-      <motion.div
-        className="hero-floating-chip"
-        animate={reduceMotion ? undefined : { y: [0, 6, 0], rotate: [0, -2, 0] }}
-        transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
-      >IDEAS IN MOTION<span>↗</span></motion.div>
+      <div className="hero-floating-square"><span>✳</span></div>
+      <div className="hero-floating-chip">IDEAS IN MOTION<span>↗</span></div>
       <span className="hero-art-foot">DESIGN × CODE × FEELING</span>
       <span className="hero-cross cross-a">+</span>
       <span className="hero-cross cross-b">+</span>
@@ -104,6 +89,7 @@ const lineVariants = {
 };
 
 export default function Home() {
+  const pageRef = useEditorialMotion();
   const heroRef = useRef(null);
   const manifestoRef = useRef(null);
   const reduceMotion = useReducedMotion();
@@ -122,21 +108,16 @@ export default function Home() {
   const manifestoY = useTransform(manifestoProgress, [0, 1], [18, -18]);
 
   return (
-    <main className="redesign-home">
+    <main ref={pageRef} className="redesign-home">
       <section ref={heroRef} className="editorial-hero page-gutter">
         <div className="editorial-hero__copy">
-          <motion.div
-            className="editorial-kicker"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55 }}
-          >
+          <div className="editorial-kicker">
             <span className="availability-pulse" />
             INDEPENDENT CREATIVE PRACTICE
             <LottieMark src={orbitMark} className="hero-lottie-mark" />
-          </motion.div>
+          </div>
 
-          <motion.h1
+          <h1
             aria-label="Digital work with feeling."
             initial="hidden"
             animate="visible"
@@ -148,30 +129,20 @@ export default function Home() {
             <span className="editorial-title-line"><motion.span variants={lineVariants}>Digital</motion.span></span>
             <span className="editorial-title-line"><motion.span variants={lineVariants}>work with</motion.span></span>
             <span className="editorial-title-line editorial-title-accent"><motion.span variants={lineVariants}>feeling<span className="title-period">.</span></motion.span></span>
-          </motion.h1>
+          </h1>
 
-          <motion.p
-            className="editorial-hero__intro"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.38 }}
-          >
+          <p className="editorial-hero__intro">
             I’m LIYAQAT — a multidisciplinary designer and creative developer shaping thoughtful identities, digital experiences and moving images.
-          </motion.p>
+          </p>
 
-          <motion.div
-            className="editorial-hero__actions"
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 0.48 }}
-          >
+          <div className="editorial-hero__actions">
             <Link className="editorial-button editorial-button--dark" to="/work">
               Explore selected work <MoveUpRight size={16} />
             </Link>
             <Link className="editorial-text-link" to="/contact">
               Start a conversation <ArrowUpRight size={15} />
             </Link>
-          </motion.div>
+          </div>
 
           <div className="editorial-hero__foot">
             <span>{siteConfig.location}</span>
@@ -179,20 +150,14 @@ export default function Home() {
           </div>
         </div>
 
-        <motion.div
-          className="editorial-hero__visual"
-          style={{ y: reduceMotion ? 0 : heroParallax }}
-          initial={{ opacity: 0, scale: 0.96 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.85, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-        >
+        <div className="editorial-hero__visual">
           <HeroObject />
           <div className="editorial-hero__visual-note">
             <span>AN OPEN MIND.</span>
             <span>A SHARP EYE.</span>
             <span>GOOD ENERGY.</span>
           </div>
-        </motion.div>
+        </div>
 
         <span className="editorial-hero__side-label">DESIGN / DIGITAL / MOTION</span>
       </section>
