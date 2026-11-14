@@ -3,7 +3,7 @@ import { Link, NavLink, useLocation } from 'react-router-dom';
 import { ArrowDownRight, ArrowUpRight, Download, Menu, X } from 'lucide-react';
 import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion';
 import { siteConfig } from '../data';
-
+import GsapMagnetic from './ui/GsapMagnetic';
 
 export function ScrollProgress() {
   const { scrollYProgress } = useScroll();
@@ -24,32 +24,68 @@ export function Header() {
   useEffect(() => setOpen(false), [location.pathname]);
 
   return (
-    <header className="site-header">
+    <header className="site-header redesign-header">
       <div className="header-inner page-gutter">
-        <Link to="/" className="wordmark" aria-label="LIYAQAT home">
+        <Link to="/" className="wordmark redesign-wordmark" aria-label="LIYAQAT home">
           LIYAQAT<span className="registered">®</span><span className="wordmark-dot" />
         </Link>
-        <nav className="desktop-nav" aria-label="Main navigation">
+        <nav className="desktop-nav redesign-desktop-nav" aria-label="Main navigation">
           {navItems.map((item) => (
-            <NavLink key={item.to} to={item.to} end={item.to === '/'} className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={item.to === '/'}
+              className={({ isActive }) => `nav-link redesign-nav-link${isActive ? ' active' : ''}`}
+            >
               {item.label}
             </NavLink>
           ))}
         </nav>
-        <Link to="/contact" className="header-cta">Let’s talk <ArrowUpRight size={15} strokeWidth={1.8} /></Link>
-        <button className="menu-toggle" aria-label={open ? 'Close menu' : 'Open menu'} aria-expanded={open} onClick={() => setOpen(!open)}>
+        <GsapMagnetic className="gsap-magnetic-wrap" strength={0.16}>
+          <Link to="/contact" className="header-cta redesign-header-cta">
+            <span>Let’s talk</span><ArrowUpRight size={15} strokeWidth={1.8} />
+          </Link>
+        </GsapMagnetic>
+        <button
+          className="menu-toggle redesign-menu-toggle"
+          aria-label={open ? 'Close menu' : 'Open menu'}
+          aria-expanded={open}
+          aria-controls="mobile-navigation"
+          onClick={() => setOpen(!open)}
+        >
           {open ? <X size={21} /> : <Menu size={21} />}
         </button>
       </div>
       <AnimatePresence>
         {open && (
-          <motion.nav className="mobile-nav" aria-label="Mobile navigation" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}>
-            {navItems.map((item, i) => (
-              <motion.div key={item.to} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.045 }}>
-                <NavLink to={item.to} end={item.to === '/'} className={({ isActive }) => `mobile-nav-link${isActive ? ' active' : ''}`}>{item.label}<ArrowDownRight size={18} /></NavLink>
+          <motion.nav
+            id="mobile-navigation"
+            className="mobile-nav redesign-mobile-nav"
+            aria-label="Mobile navigation"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+          >
+            {navItems.map((item, index) => (
+              <motion.div
+                key={item.to}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.045 }}
+              >
+                <NavLink
+                  to={item.to}
+                  end={item.to === '/'}
+                  className={({ isActive }) => `mobile-nav-link redesign-mobile-nav-link${isActive ? ' active' : ''}`}
+                >
+                  {item.label}<ArrowDownRight size={18} />
+                </NavLink>
               </motion.div>
             ))}
-            <Link to="/contact" className="mobile-nav-contact">Start a project <ArrowUpRight size={18} /></Link>
+            <Link to="/contact" className="mobile-nav-contact redesign-mobile-nav-contact">
+              Start a project <ArrowUpRight size={18} />
+            </Link>
           </motion.nav>
         )}
       </AnimatePresence>
@@ -60,22 +96,33 @@ export function Header() {
 export function Footer() {
   const year = new Date().getFullYear();
   return (
-    <footer className="site-footer">
-      <div className="footer-top page-gutter">
-        <div className="footer-invite">
-          <span className="eyebrow"><span className="eyebrow-dot" /> HAVE SOMETHING GOOD IN MIND?</span>
-          <h2>Let’s make<br /><span>it mean something.</span></h2>
-          <Link className="footer-big-link" to="/contact">Start a conversation <ArrowUpRight size={21} /></Link>
+    <footer className="site-footer redesign-footer">
+      <div className="redesign-footer__main page-gutter">
+        <div className="redesign-footer__invite">
+          <span className="editorial-kicker"><span className="availability-pulse" /> HAVE SOMETHING GOOD IN MIND?</span>
+          <h2>Let’s make<br /><em>it matter.</em></h2>
+          <GsapMagnetic className="gsap-magnetic-wrap" strength={0.12}>
+            <Link className="redesign-footer__contact-link" to="/contact">
+              Start a conversation <ArrowUpRight size={18} />
+            </Link>
+          </GsapMagnetic>
         </div>
-        <div className="footer-side">
-          <span className="footer-side-label">A LITTLE BIT OF EVERYTHING.<br />A LOT OF INTENTION.</span>
-          <Link to="/work" className="footer-side-link">Explore selected work <ArrowUpRight size={16} /></Link>
-          <a className="footer-side-link" href={`${import.meta.env.BASE_URL}resume.pdf`} download="LIYAQAT-Resume.pdf">Download résumé <Download size={16} /></a>
-          <a className="footer-side-link" href={`mailto:${siteConfig.email}`}>Send an email <ArrowUpRight size={16} /></a>
-          <span className="footer-stamp">L<span>®</span></span>
+        <div className="redesign-footer__links">
+          <div>
+            <span className="redesign-footer__label">EXPLORE</span>
+            <Link to="/work">Selected work</Link>
+            <Link to="/about">About</Link>
+            <Link to="/services">Services</Link>
+          </div>
+          <div>
+            <span className="redesign-footer__label">SAY HELLO</span>
+            <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
+            <a href={`${import.meta.env.BASE_URL}resume.pdf`} download="LIYAQAT-Resume.pdf">Download résumé <Download size={13} /></a>
+            <span className="redesign-footer__availability"><i /> {siteConfig.availability}</span>
+          </div>
         </div>
       </div>
-      <div className="footer-bottom page-gutter">
+      <div className="redesign-footer__bottom page-gutter">
         <Link to="/" className="footer-wordmark">LIYAQAT<span>®</span></Link>
         <span>Independent by nature. Collaborative by design.</span>
         <span>© {year} · Made with intention.</span>
