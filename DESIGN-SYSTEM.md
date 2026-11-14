@@ -32,3 +32,16 @@ Tailwind v4 tokens live in `src/tailwind.css` under `@theme`. Shared primitives 
 - Vendor groups are separated in `vite.config.js`; Lottie is loaded as its own async chunk.
 - `npm run build` runs `scripts/prepare-pages.mjs` after Vite. It creates a directory index for each real route and derives project detail routes from `src/data.js`, allowing GitHub Pages to serve those paths with HTTP 200.
 - The Pages workflow builds pull requests but deploys only pushes to `main`.
+
+
+## GSAP motion architecture
+
+GSAP is the primary orchestration layer for the redesigned interface. The site imports the core engine with only the plugins this experience actually needs:
+
+- **Timeline choreography** for the home hero and page entrances, with staggered line reveals.
+- **ScrollTrigger** for viewport-aware section reveals, gentle artwork parallax and the horizontal discipline ribbon.
+- **Flip** for spatially coherent project-filter changes instead of abrupt grid replacement.
+- **QuickTo pointer response** for restrained 3D project-card and hero-object tilt on fine pointers.
+- **Magnetic CTA response** for the header and footer calls to action.
+
+The shared engine and plugin registration live in `src/lib/gsap.js`; page-scoped setup and teardown live in `src/hooks/useEditorialMotion.js`. Component-level interactions clean up their own listeners and tweens. GSAP is not applied indiscriminately: there is no scroll hijacking, no forced smooth-scroll layer, and no unnecessary draggable or physics interactions. Reduced-motion users receive the complete static layout without entrance or ambient motion.
