@@ -3,6 +3,7 @@ import { Link, NavLink, useLocation } from 'react-router-dom';
 import { ArrowDownRight, ArrowUpRight, Download, Menu, X } from 'lucide-react';
 import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion';
 import { siteConfig } from '../data';
+import GsapMagnetic from './ui/GsapMagnetic';
 
 export function ScrollProgress() {
   const { scrollYProgress } = useScroll();
@@ -40,9 +41,11 @@ export function Header() {
             </NavLink>
           ))}
         </nav>
-        <Link to="/contact" className="header-cta redesign-header-cta">
-          <span>Let’s talk</span><ArrowUpRight size={15} strokeWidth={1.8} />
-        </Link>
+        <GsapMagnetic className="gsap-magnetic-wrap" strength={0.16}>
+          <Link to="/contact" className="header-cta redesign-header-cta">
+            <span>Let’s talk</span><ArrowUpRight size={15} strokeWidth={1.8} />
+          </Link>
+        </GsapMagnetic>
         <button
           className="menu-toggle redesign-menu-toggle"
           aria-label={open ? 'Close menu' : 'Open menu'}
@@ -98,9 +101,11 @@ export function Footer() {
         <div className="redesign-footer__invite">
           <span className="editorial-kicker"><span className="availability-pulse" /> HAVE SOMETHING GOOD IN MIND?</span>
           <h2>Let’s make<br /><em>it matter.</em></h2>
-          <Link className="redesign-footer__contact-link" to="/contact">
-            Start a conversation <ArrowUpRight size={18} />
-          </Link>
+          <GsapMagnetic className="gsap-magnetic-wrap" strength={0.12}>
+            <Link className="redesign-footer__contact-link" to="/contact">
+              Start a conversation <ArrowUpRight size={18} />
+            </Link>
+          </GsapMagnetic>
         </div>
         <div className="redesign-footer__links">
           <div>
