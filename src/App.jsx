@@ -3,6 +3,7 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import { AnimatePresence, MotionConfig } from 'framer-motion';
 import { Header, Footer, ScrollToTop, ScrollProgress } from './components/SiteLayout';
 import PageTransition from './components/PageTransition';
+import CustomCursor from './components/CustomCursor';
 import { projects } from './data';
 
 const Home = lazy(() => import('./pages/Home'));
@@ -78,6 +79,7 @@ export default function App() {
       <RouteAnnouncer />
       <div className="app-shell" aria-hidden={showIntro} inert={showIntro ? '' : undefined}>
         <ScrollProgress />
+        <CustomCursor />
         <Header />
         <AnimatePresence mode="wait" initial={false}>
           <PageTransition key={location.pathname}>
