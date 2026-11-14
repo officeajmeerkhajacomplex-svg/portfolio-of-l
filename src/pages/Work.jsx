@@ -1,7 +1,6 @@
 import { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { ArrowDownRight, ArrowUpRight, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import { projects } from '../data';
 import useEditorialMotion from '../hooks/useEditorialMotion';
 import { Flip } from '../lib/gsap';
@@ -42,11 +41,11 @@ export default function Work() {
   return (
     <main ref={pageRef} className="inner-page work-page redesign-page redesign-work-page page-gutter">
       <div className="page-kicker"><span>SELECTED WORK / 2024—2026</span><Link to="/contact">Have a project? <ArrowUpRight size={14} /></Link></div>
-      <motion.div className="page-hero-heading" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65 }}>
+      <div className="page-hero-heading">
         <span className="eyebrow"><span className="eyebrow-dot" /> A FEW THINGS I’VE BEEN EXPLORING</span>
         <h1>Work that<br /><em>makes a feeling.</em></h1>
         <p>Digital experiences, visual identities, and moving images — connected by curiosity and an eye for the details.</p>
-      </motion.div>
+      </div>
       <div className="work-filter-row">
         <span><span className="tiny-live-dot" /> {String(visibleProjects.length).padStart(2, '0')} SELECTED CONCEPTS</span>
         <span>DESIGN · DIGITAL · MOTION</span>
