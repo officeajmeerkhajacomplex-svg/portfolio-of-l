@@ -12,7 +12,6 @@ import {
 } from 'framer-motion';
 import { projects, services, siteConfig } from '../data';
 import ProjectCard from '../components/ProjectCard';
-import ScrollReveal from '../components/ScrollReveal';
 import LottieMark from '../components/LottieMark';
 import orbitMark from '../assets/orbit-mark.json';
 
@@ -102,7 +101,7 @@ export default function Home() {
           <h1 aria-label="Digital work with feeling.">
             <span className="editorial-title-line"><span>Digital</span></span>
             <span className="editorial-title-line"><span>work with</span></span>
-            <span className="editorial-title-line editorial-title-accent"><motion.span variants={lineVariants}>feeling<span className="title-period">.</span></motion.span></span>
+            <span className="editorial-title-line editorial-title-accent"><span>feeling<span className="title-period">.</span></motion.span></span>
           </h1>
 
           <p className="editorial-hero__intro">
