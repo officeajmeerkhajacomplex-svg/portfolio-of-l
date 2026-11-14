@@ -120,19 +120,14 @@ export default function useEditorialMotion() {
         const marquee = element.querySelector('.editorial-marquee__track');
         if (marquee) {
           gsap.to(marquee, {
-            xPercent: -18,
+            xPercent: -50,
+            duration: 34,
+            repeat: -1,
             ease: 'none',
-            scrollTrigger: {
-              trigger: marquee,
-              start: 'top bottom',
-              end: 'bottom top',
-              scrub: 1,
-            },
           });
         }
 
         ScrollTrigger.refresh();
-        return () => media.revert();
       });
     }, element);
 
