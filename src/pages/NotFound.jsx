@@ -3,7 +3,7 @@ import { ArrowLeft, ArrowUpRight } from 'lucide-react';
 
 export default function NotFound() {
   return (
-    <main className="inner-page page-gutter not-found-page">
+    <main className="inner-page page-gutter not-found-page redesign-page redesign-not-found-page">
       <div className="page-kicker">
         <span>ERROR / 404</span>
         <Link to="/">Back to home <ArrowUpRight size={14} /></Link>
