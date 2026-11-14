@@ -1,11 +1,9 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import useEditorialMotion from '../hooks/useEditorialMotion';
 import { Link } from 'react-router-dom';
 import { ArrowDown, ArrowDownRight, ArrowUpRight, MoveUpRight, Sparkles } from 'lucide-react';
 import {
   motion,
-  useMotionValue,
-  useSpring,
   useTransform,
   useScroll,
   useReducedMotion,
@@ -14,26 +12,33 @@ import { projects, services, siteConfig } from '../data';
 import ProjectCard from '../components/ProjectCard';
 import LottieMark from '../components/LottieMark';
 import orbitMark from '../assets/orbit-mark.json';
+import { gsap } from '../lib/gsap';
 
 function HeroObject() {
   const ref = useRef(null);
-  const reduceMotion = useReducedMotion();
-  const rawX = useMotionValue(0);
-  const rawY = useMotionValue(0);
-  const rotateX = useSpring(useTransform(rawY, [-0.5, 0.5], [9, -9]), { stiffness: 70, damping: 20 });
-  const rotateY = useSpring(useTransform(rawX, [-0.5, 0.5], [-12, 12]), { stiffness: 70, damping: 20 });
+  const objectRef = useRef(null);
+  const tiltX = useRef(null);
+  const tiltY = useRef(null);
+
+  useEffect(() => {
+    const object = objectRef.current;
+    if (!object || window.matchMedia('(prefers-reduced-motion: reduce)').matches || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return undefined;
+    tiltX.current = gsap.quickTo(object, 'rotationX', { duration: 0.6, ease: 'power3.out' });
+    tiltY.current = gsap.quickTo(object, 'rotationY', { duration: 0.6, ease: 'power3.out' });
+    return () => gsap.killTweensOf(object);
+  }, []);
 
   const handleMove = (event) => {
-    if (reduceMotion || event.pointerType === 'touch') return;
+    if (event.pointerType === 'touch') return;
     const rect = ref.current?.getBoundingClientRect();
     if (!rect) return;
-    rawX.set((event.clientX - rect.left) / rect.width - 0.5);
-    rawY.set((event.clientY - rect.top) / rect.height - 0.5);
+    tiltY.current?.(((event.clientX - rect.left) / rect.width - 0.5) * 12);
+    tiltX.current?.(((event.clientY - rect.top) / rect.height - 0.5) * -9);
   };
 
   const reset = () => {
-    rawX.set(0);
-    rawY.set(0);
+    tiltX.current?.(0);
+    tiltY.current?.(0);
   };
 
   return (
@@ -48,11 +53,11 @@ function HeroObject() {
       <div className="hero-art-caption"><span>OBJECT STUDY / 001</span><span>FORM FOLLOWS FEELING</span></div>
       <div className="hero-orbital orbital-a" />
       <div className="hero-orbital orbital-b" />
-      <motion.div className="hero-object" style={reduceMotion ? undefined : { rotateX, rotateY }}>
+      <div ref={objectRef} className="hero-object">
         <div className="object-core"><span className="object-shine" /><span className="object-cut" /></div>
         <span className="object-ring ring-a" />
         <span className="object-ring ring-b" />
-      </motion.div>
+      </div>
       <div className="hero-floating-square"><span>✳</span></div>
       <div className="hero-floating-chip">IDEAS IN MOTION<span>↗</span></div>
       <span className="hero-art-foot">DESIGN × CODE × FEELING</span>
