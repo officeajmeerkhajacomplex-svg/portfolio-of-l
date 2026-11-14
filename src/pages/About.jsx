@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { ArrowDownRight, ArrowUpRight, Compass, Download, Eye, Layers3, WandSparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { siteConfig } from '../data';
+import useEditorialMotion from '../hooks/useEditorialMotion';
 
 const principles = [
   { icon: <Eye size={20} />, title: 'Notice the details.', copy: 'The tiny things add up: the weight of a typeface, the timing of a transition, the way a page breathes.' },
@@ -11,8 +12,9 @@ const principles = [
 ];
 
 export default function About() {
+  const pageRef = useEditorialMotion();
   return (
-    <main className="inner-page about-page redesign-page redesign-about-page page-gutter">
+    <main ref={pageRef} className="inner-page about-page redesign-page redesign-about-page page-gutter">
       <div className="page-kicker"><span>THE PERSON BEHIND THE PIXELS</span><Link to="/contact">Say hello <ArrowUpRight size={14} /></Link></div>
       <motion.div className="page-hero-heading about-heading" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65 }}><span className="eyebrow"><span className="eyebrow-dot" /> A LITTLE CONTEXT</span><h1>Curious by<br /><em>default.</em></h1><p>I’m LIYAQAT. A multidisciplinary creative who likes being at the intersection of design, technology, and storytelling.</p><a className="resume-link" href={`${import.meta.env.BASE_URL}resume.pdf`} download="LIYAQAT-Resume.pdf">Download résumé <span>PDF</span><Download size={15} /></a></motion.div>
       <section className="about-portrait-block"><div className="about-visual" aria-label="Abstract monogram artwork"><div className="about-visual-circle circle-one"/><div className="about-visual-circle circle-two"/><div className="about-monogram">L<span>®</span></div><span className="about-visual-note note-one">ALWAYS IN<br />PROGRESS ↗</span><span className="about-visual-note note-two">CURIOUS<br />SINCE DAY ONE.</span><span className="about-visual-star">✳</span></div><div className="about-narrative"><span className="eyebrow">A MULTIDISCIPLINARY MIND</span><h2>One foot in the<br />details. One in the<br /><em>big picture.</em></h2><p>I move between web development, UI/UX, graphic design, video editing, and motion. Not because everything needs to do everything — but because ideas get more interesting when different disciplines talk to each other.</p><p>I care about clear thinking, strong visual choices, and the small moments that make an experience feel considered rather than assembled.</p><p>This portfolio is a living snapshot of that practice. It’s where I explore, test, learn, and make a few things just because the idea won’t leave me alone.</p><Link to="/work" className="text-link">See what I’m exploring <ArrowUpRight size={16} /></Link></div></section>
