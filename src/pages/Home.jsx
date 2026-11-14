@@ -103,22 +103,22 @@ export default function Home() {
             <LottieMark src={orbitMark} className="hero-lottie-mark" />
           </div>
 
-          <h1 aria-label="Digital work with feeling.">
+          <h1 aria-label="Digital experiences with feeling.">
             <span className="editorial-title-line"><span>Digital</span></span>
-            <span className="editorial-title-line"><span>work with</span></span>
-            <span className="editorial-title-line editorial-title-accent"><span>feeling<span className="title-period">.</span></span></span>
+            <span className="editorial-title-line"><span>experiences</span></span>
+            <span className="editorial-title-line editorial-title-accent"><span>with feeling<span className="title-period">.</span></span></span>
           </h1>
 
           <p className="editorial-hero__intro">
-            I’m LIYAQAT — a multidisciplinary designer and creative developer shaping thoughtful identities, digital experiences and moving images.
+            I’m LIYAQAT — a multidisciplinary designer and creative developer shaping brands and thoughtful identities, building digital experiences, and bringing ideas to life through design, code, motion and moving images.
           </p>
 
           <div className="editorial-hero__actions">
             <Link className="editorial-button editorial-button--dark" to="/work">
               Explore selected work <MoveUpRight size={16} />
             </Link>
-            <Link className="editorial-text-link" to="/contact">
-              Start a conversation <ArrowUpRight size={15} />
+            <Link className="editorial-text-link" to="/about">
+              A bit about me <ArrowUpRight size={15} />
             </Link>
           </div>
 
@@ -135,6 +135,7 @@ export default function Home() {
             <span>A SHARP EYE.</span>
             <span>GOOD ENERGY.</span>
           </div>
+          <p className="editorial-hero__personal-note">A PERSONAL PRACTICE BUILT ON CURIOSITY.</p>
         </div>
 
         <span className="editorial-hero__side-label">DESIGN / DIGITAL / MOTION</span>
@@ -144,7 +145,7 @@ export default function Home() {
         <div className="editorial-marquee__track">
           {Array.from({ length: 2 }).map((_, index) => (
             <span className="editorial-marquee__set" key={index}>
-              <b>IDENTITY</b><i>✳</i><b>DIGITAL</b><i>✳</i><b>ART DIRECTION</b><i>✳</i><b>MOTION</b><i>✳</i><b>DEVELOPMENT</b><i>✳</i>
+              <b>IDENTITY</b><i>✳</i><b>DIGITAL</b><i>✳</i><b>ART DIRECTION</b><i>✳</i><b>MOTION</b><i>✳</i><b>DEVELOPMENT</b><i>✳</i><b>STORYTELLING</b><i>✳</i>
             </span>
           ))}
         </div>
@@ -158,13 +159,13 @@ export default function Home() {
           link={<Link className="editorial-text-link" to="/work">View all work <ArrowUpRight size={15} /></Link>}
         />
         <div className="project-grid redesign-project-grid">
-          {projects.slice(0, 3).map((project, index) => (
+          {projects.map((project, index) => (
             <ProjectCard key={project.slug} project={project} index={index} />
           ))}
         </div>
         <div className="redesign-work-note">
           <Sparkles size={15} />
-          <p>These are self-initiated concept explorations — a glimpse of the ideas, systems and details I love bringing to life.</p>
+          <p>These are self-initiated concept explorations that show my creative direction — a glimpse of the ideas, systems and details I love bringing to life. Real projects will replace them as the portfolio evolves.</p>
         </div>
       </section>
 
@@ -174,10 +175,11 @@ export default function Home() {
           <span>THOUGHT / 001 — 2026</span>
         </div>
         <motion.h2 style={{ y: reduceMotion ? 0 : manifestoY }}>
-          Good work should<br />
-          do more than <em>look good.</em><br />
-          It should <span>stay with you.</span>
+          Good work doesn’t just<br />
+          look different. It <em>feels</em><br />
+          <span>like nothing else.</span>
         </motion.h2>
+        <p className="editorial-manifesto__signature">Technology makes it real. The magic lives where they meet.</p>
         <div className="editorial-manifesto__bottom">
           <span>STRATEGY GIVES IT DIRECTION. DESIGN GIVES IT CHARACTER.</span>
           <Link to="/about">A little more about me <ArrowUpRight size={15} /></Link>
@@ -213,6 +215,7 @@ export default function Home() {
           <h2>Let’s make<br /><em>it matter.</em></h2>
           <div className="editorial-contact-cta__aside">
             <p>Big brief, small question or a half-formed idea. The best things usually start with a conversation.</p>
+            <p className="editorial-contact-cta__note">Have a good one in mind? Tell me what you’re dreaming up. We’ll figure out how to bring it into the world.</p>
             <Link className="editorial-button editorial-button--coral" to="/contact">Tell me about it <ArrowUpRight size={16} /></Link>
           </div>
         </div>
