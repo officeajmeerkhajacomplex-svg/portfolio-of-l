@@ -5,7 +5,6 @@ import { ArrowDown, ArrowDownRight, ArrowUpRight, MoveUpRight, Sparkles } from '
 import {
   motion,
   useMotionValue,
-  useSpring,
   useTransform,
   useScroll,
   useReducedMotion,
@@ -79,31 +78,13 @@ function SectionHeading({ index, label, title, link }) {
   );
 }
 
-const lineVariants = {
-  hidden: { y: '112%', opacity: 0 },
-  visible: {
-    y: '0%',
-    opacity: 1,
-    transition: { duration: 0.82, ease: [0.22, 1, 0.36, 1] },
-  },
-};
-
 export default function Home() {
   const pageRef = useEditorialMotion();
-  const heroRef = useRef(null);
   const manifestoRef = useRef(null);
   const reduceMotion = useReducedMotion();
-  const { scrollYProgress: heroProgress } = useScroll({
-    target: heroRef,
-    offset: ['start start', 'end start'],
-  });
   const { scrollYProgress: manifestoProgress } = useScroll({
     target: manifestoRef,
     offset: ['start end', 'end start'],
-  });
-  const heroParallax = useSpring(useTransform(heroProgress, [0, 1], [0, 42]), {
-    stiffness: 55,
-    damping: 24,
   });
   const manifestoY = useTransform(manifestoProgress, [0, 1], [18, -18]);
 
@@ -126,7 +107,7 @@ export default function Home() {
               visible: { transition: { staggerChildren: 0.12, delayChildren: 0.08 } },
             }}
           >
-            <span className="editorial-title-line"><motion.span variants={lineVariants}>Digital</motion.span></span>
+            <span className="editorial-title-line"><span>Digital</span></span>
             <span className="editorial-title-line"><motion.span variants={lineVariants}>work with</motion.span></span>
             <span className="editorial-title-line editorial-title-accent"><motion.span variants={lineVariants}>feeling<span className="title-period">.</span></motion.span></span>
           </h1>
