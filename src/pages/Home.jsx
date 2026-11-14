@@ -106,7 +106,7 @@ export default function Home() {
           <h1 aria-label="Digital work with feeling.">
             <span className="editorial-title-line"><span>Digital</span></span>
             <span className="editorial-title-line"><span>work with</span></span>
-            <span className="editorial-title-line editorial-title-accent"><span>feeling<span className="title-period">.</span></motion.span></span>
+            <span className="editorial-title-line editorial-title-accent"><span>feeling<span className="title-period">.</span></span></span>
           </h1>
 
           <p className="editorial-hero__intro">
