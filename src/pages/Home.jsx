@@ -5,6 +5,7 @@ import { ArrowDown, ArrowDownRight, ArrowUpRight, MoveUpRight, Sparkles } from '
 import {
   motion,
   useMotionValue,
+  useSpring,
   useTransform,
   useScroll,
   useReducedMotion,
@@ -90,7 +91,7 @@ export default function Home() {
 
   return (
     <main ref={pageRef} className="redesign-home">
-      <section ref={heroRef} className="editorial-hero page-gutter">
+      <section className="editorial-hero page-gutter">
         <div className="editorial-hero__copy">
           <div className="editorial-kicker">
             <span className="availability-pulse" />
@@ -98,17 +99,9 @@ export default function Home() {
             <LottieMark src={orbitMark} className="hero-lottie-mark" />
           </div>
 
-          <h1
-            aria-label="Digital work with feeling."
-            initial="hidden"
-            animate="visible"
-            variants={{
-              hidden: {},
-              visible: { transition: { staggerChildren: 0.12, delayChildren: 0.08 } },
-            }}
-          >
+          <h1 aria-label="Digital work with feeling.">
             <span className="editorial-title-line"><span>Digital</span></span>
-            <span className="editorial-title-line"><motion.span variants={lineVariants}>work with</motion.span></span>
+            <span className="editorial-title-line"><span>work with</span></span>
             <span className="editorial-title-line editorial-title-accent"><motion.span variants={lineVariants}>feeling<span className="title-period">.</span></motion.span></span>
           </h1>
 
