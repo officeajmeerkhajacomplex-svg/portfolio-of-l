@@ -11,7 +11,7 @@ export default function ProjectDetail() {
   const currentIndex = projects.findIndex((item) => item.slug === slug);
   const nextProject = projects[(currentIndex + 1) % projects.length];
   return (
-    <main className="inner-page project-detail page-gutter">
+    <main className="inner-page project-detail redesign-page redesign-project-detail page-gutter">
       <div className="page-kicker"><Link to="/work"><ArrowLeft size={14} /> Back to selected work</Link><span>CASE STUDY / {project.number}</span></div>
       <motion.div className="project-detail-heading" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}><span className="eyebrow"><span className="eyebrow-dot" /> {project.category.toUpperCase()}</span><h1>{project.title}<span className="project-title-period">.</span></h1><p>{project.tagline}</p></motion.div>
       <motion.div className="detail-artwork" initial={{ opacity: 0, scale: 0.975 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.75 }}><ProjectArtwork theme={project.theme} /></motion.div>
