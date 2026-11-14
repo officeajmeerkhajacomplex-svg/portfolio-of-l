@@ -30,7 +30,7 @@ export default function Contact() {
     }
   };
   return (
-    <main className="inner-page contact-page page-gutter">
+    <main className="inner-page contact-page redesign-page redesign-contact-page page-gutter">
       <div className="page-kicker"><span>THE BEGINNING OF SOMETHING</span><Link to="/work">See the work <ArrowUpRight size={14} /></Link></div>
       <motion.div className="contact-intro" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65 }}><span className="eyebrow"><span className="eyebrow-dot" /> GOT A GOOD ONE?</span><h1>Let’s make<br /><em>something matter.</em></h1><p>A half-formed idea, a big brief, a small question — I’m happy to start wherever you are.</p></motion.div>
       <div className="contact-layout"><section className="contact-info"><span className="contact-info-label">THE DIRECT ROUTE</span><button className="contact-email-button" onClick={copyEmail}><span>{siteConfig.email}</span>{copied ? <Check size={18} /> : <Copy size={18} />}</button><span className="contact-hint">{copied ? 'Copied to clipboard' : 'Click to copy email address'}</span><div className="contact-rule"/><div className="contact-info-block"><span>BASED IN</span><p>{siteConfig.location}</p></div><div className="contact-info-block"><span>CURRENT STATUS</span><p><i className="contact-status-dot" /> {siteConfig.availability}</p></div><div className="contact-sticker"><LottieMark src={contactNote} className="contact-lottie-mark" /><span>GOOD IDEAS<br />WELCOME HERE.</span><ArrowUpRight size={18} /></div><div className="contact-note"><Mail size={16} /><p>Prefer email? Write a few lines about what you have in mind and I’ll take it from there.</p></div></section>
