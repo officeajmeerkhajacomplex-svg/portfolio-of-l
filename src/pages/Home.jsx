@@ -10,9 +10,12 @@ import {
 } from 'framer-motion';
 import { projects, services, siteConfig } from '../data';
 import ProjectCard from '../components/ProjectCard';
+import MorphingText from '../components/ui/MorphingText';
 import LottieMark from '../components/LottieMark';
 import orbitMark from '../assets/orbit-mark.json';
 import { gsap } from '../lib/gsap';
+
+const HERO_MORPH_WORDS = ['feeling', 'Code', 'Design', 'Motion', 'capture'];
 
 function HeroObject() {
   const ref = useRef(null);
@@ -103,10 +106,10 @@ export default function Home() {
             <LottieMark src={orbitMark} className="hero-lottie-mark" />
           </div>
 
-          <h1 aria-label="Digital experiences with feeling.">
+          <h1 aria-label="Digital work with feeling.">
             <span className="editorial-title-line"><span>Digital</span></span>
-            <span className="editorial-title-line"><span>experiences</span></span>
-            <span className="editorial-title-line editorial-title-accent"><span>with feeling<span className="title-period">.</span></span></span>
+            <span className="editorial-title-line"><span>work with</span></span>
+            <span className="editorial-title-line editorial-title-accent"><span><MorphingText texts={HERO_MORPH_WORDS} /><span className="title-period">.</span></span></span>
           </h1>
 
           <p className="editorial-hero__intro">
