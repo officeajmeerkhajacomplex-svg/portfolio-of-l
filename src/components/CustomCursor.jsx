@@ -2,6 +2,27 @@ import { useLayoutEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { gsap } from '../lib/gsap';
 
+const INTERACTIVE_TARGETS = [
+  'a',
+  'button',
+  'input',
+  'textarea',
+  'select',
+  'summary',
+  'label',
+  '[role="button"]',
+  '[role="link"]',
+  '[data-cursor]',
+  '[data-cursor-project]',
+  '[tabindex]:not([tabindex="-1"])',
+  '[contenteditable="true"]',
+  '[onclick]',
+].join(',');
+
+/**
+ * One app-level cursor layer for every route and every page surface.
+ * The cursor is portalled to body to escape transformed and clipped app shells.
+ */
 export default function CustomCursor() {
   const rootRef = useRef(null);
   const trailRef = useRef(null);
@@ -19,81 +40,137 @@ export default function CustomCursor() {
 
     const media = gsap.matchMedia();
     media.add('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)', () => {
-      let hasPosition = false;
+      let positioned = false;
+      let activeTarget = null;
+
       const quickPair = (node, duration) => ({
         x: gsap.quickTo(node, 'x', { duration, ease: 'power3.out' }),
         y: gsap.quickTo(node, 'y', { duration, ease: 'power3.out' }),
       });
-      const ringTo = quickPair(ring, 0.13);
-      const trailTo = quickPair(trail, 0.3);
-      const dotTo = quickPair(dot, 0.055);
 
-      gsap.set([trail, ring, dot], { xPercent: -50, yPercent: -50 });
+      const ringTo = quickPair(ring, 0.12);
+      const trailTo = quickPair(trail, 0.28);
+      const dotTo = quickPair(dot, 0.045);
+
+      gsap.set([trail, ring, dot], {
+        x: 0,
+        y: 0,
+        xPercent: -50,
+        yPercent: -50,
+        force3D: true,
+      });
       gsap.set(root, { autoAlpha: 0 });
       gsap.set(label, { autoAlpha: 0, scale: 0.78 });
 
-      const onMove = (event) => {
-        if (event.pointerType && event.pointerType !== 'mouse') return;
-        if (!hasPosition) {
-          gsap.set([trail, ring, dot], { x: event.clientX, y: event.clientY });
+      const moveLayer = (x, y) => {
+        if (!positioned) {
+          // Never reveal an uninitialised layer at the viewport centre.
+          gsap.set([trail, ring, dot], { x, y });
           gsap.set(root, { autoAlpha: 1 });
-          hasPosition = true;
+          positioned = true;
           return;
         }
-        ringTo.x(event.clientX); ringTo.y(event.clientY);
-        trailTo.x(event.clientX); trailTo.y(event.clientY);
-        dotTo.x(event.clientX); dotTo.y(event.clientY);
+        ringTo.x(x);
+        ringTo.y(y);
+        trailTo.x(x);
+        trailTo.y(y);
+        dotTo.x(x);
+        dotTo.y(y);
       };
 
-      const selector = '[data-cursor], [data-cursor-project], a, button, [role="button"], input, textarea, select, summary';
-      const onOver = (event) => {
-        const target = event.target?.closest?.(selector);
-        if (!target) return;
-        const isProject = target.hasAttribute('data-cursor-project');
-        label.textContent = target.getAttribute('data-cursor') || (isProject ? 'VIEW' : 'OPEN');
-        gsap.to(ring, { scale: isProject ? 1.8 : 1.28, borderColor: 'rgba(201,67,50,.9)', backgroundColor: isProject ? 'rgba(255,248,241,.76)' : 'rgba(255,248,241,.38)', duration: 0.24, overwrite: true });
-        gsap.to(trail, { scale: isProject ? 1.45 : 1.12, duration: 0.3, overwrite: true });
-        gsap.to(dot, { scale: isProject ? 0.4 : 0.8, duration: 0.18, overwrite: true });
-        gsap.to(label, { autoAlpha: isProject ? 1 : 0, scale: 1, duration: 0.2, overwrite: true });
+      const onPointerMove = (event) => {
+        if (event.pointerType === 'touch') return;
+        moveLayer(event.clientX, event.clientY);
       };
 
-      const onOut = (event) => {
-        const from = event.target?.closest?.(selector);
-        const to = event.relatedTarget?.closest?.(selector);
-        if (!from || (to && from === to)) return;
-        gsap.to(ring, { scale: 1, borderColor: 'rgba(201,67,50,.58)', backgroundColor: 'rgba(255,248,241,.12)', duration: 0.26, overwrite: true });
-        gsap.to(trail, { scale: 1, duration: 0.3, overwrite: true });
-        gsap.to(dot, { scale: 1, duration: 0.18, overwrite: true });
+      const resetHover = () => {
+        activeTarget = null;
+        gsap.to(ring, {
+          scale: 1,
+          borderColor: 'rgba(201,67,50,.58)',
+          backgroundColor: 'rgba(255,248,241,.12)',
+          duration: 0.24,
+          overwrite: true,
+        });
+        gsap.to(trail, { scale: 1, duration: 0.28, overwrite: true });
+        gsap.to(dot, { scale: 1, duration: 0.16, overwrite: true });
         gsap.to(label, { autoAlpha: 0, scale: 0.78, duration: 0.14, overwrite: true });
       };
 
-      const onDown = () => gsap.to(ring, { scale: 0.82, duration: 0.1, overwrite: true });
-      const onUp = () => gsap.to(ring, { scale: 1, duration: 0.22, ease: 'back.out(2)', overwrite: true });
-      const onLeave = () => {
-        hasPosition = false;
-        gsap.to(root, { autoAlpha: 0, duration: 0.16, overwrite: true });
+      const onPointerOver = (event) => {
+        const target = event.target?.closest?.(INTERACTIVE_TARGETS);
+        if (!target || target === activeTarget) return;
+
+        activeTarget = target;
+        const isProject = target.hasAttribute('data-cursor-project');
+        const copy = target.getAttribute('data-cursor') || (isProject ? 'VIEW' : 'OPEN');
+        label.textContent = copy;
+
+        gsap.to(ring, {
+          scale: isProject ? 1.82 : 1.3,
+          borderColor: 'rgba(201,67,50,.94)',
+          backgroundColor: isProject ? 'rgba(255,248,241,.8)' : 'rgba(255,248,241,.42)',
+          duration: 0.22,
+          ease: 'power3.out',
+          overwrite: true,
+        });
+        gsap.to(trail, { scale: isProject ? 1.5 : 1.14, duration: 0.28, overwrite: true });
+        gsap.to(dot, { scale: isProject ? 0.42 : 0.78, duration: 0.16, overwrite: true });
+        gsap.to(label, {
+          autoAlpha: isProject || target.hasAttribute('data-cursor') ? 1 : 0,
+          scale: 1,
+          duration: 0.2,
+          overwrite: true,
+        });
+      };
+
+      const onPointerOut = (event) => {
+        // Moving among children of the same interactive element is not a leave.
+        const from = event.target?.closest?.(INTERACTIVE_TARGETS);
+        const to = event.relatedTarget?.closest?.(INTERACTIVE_TARGETS);
+        if (from && from === to) return;
+        if (from && from === activeTarget && !to) resetHover();
+
+        // Leaving the browser window hides the layer. The next entry seeds it anew.
+        if (!event.relatedTarget) {
+          positioned = false;
+          gsap.to(root, { autoAlpha: 0, duration: 0.12, overwrite: true });
+          resetHover();
+        }
+      };
+
+      const onPointerDown = () => gsap.to(ring, { scale: 0.82, duration: 0.1, overwrite: true });
+      const onPointerUp = () => gsap.to(ring, { scale: activeTarget ? 1.3 : 1, duration: 0.2, ease: 'back.out(2)', overwrite: true });
+      const onWindowBlur = () => {
+        positioned = false;
+        gsap.to(root, { autoAlpha: 0, duration: 0.12, overwrite: true });
+        resetHover();
       };
 
       document.documentElement.classList.add('has-gsap-cursor');
-      document.addEventListener('pointermove', onMove, { passive: true });
-      document.addEventListener('pointerover', onOver);
-      document.addEventListener('pointerout', onOut);
-      document.addEventListener('pointerdown', onDown);
-      document.addEventListener('pointerup', onUp);
-      window.addEventListener('blur', onLeave);
-      document.addEventListener('mouseleave', onLeave);
+      // Window-level tracking means route transitions and nested page content
+      // cannot accidentally detach the listener from the active surface.
+      window.addEventListener('pointermove', onPointerMove, { passive: true, capture: true });
+      document.addEventListener('pointerover', onPointerOver, true);
+      document.addEventListener('pointerout', onPointerOut, true);
+      window.addEventListener('pointerdown', onPointerDown, true);
+      window.addEventListener('pointerup', onPointerUp, true);
+      window.addEventListener('pointercancel', onPointerUp, true);
+      window.addEventListener('blur', onWindowBlur);
+
       return () => {
         document.documentElement.classList.remove('has-gsap-cursor');
-        document.removeEventListener('pointermove', onMove);
-        document.removeEventListener('pointerover', onOver);
-        document.removeEventListener('pointerout', onOut);
-        document.removeEventListener('pointerdown', onDown);
-        document.removeEventListener('pointerup', onUp);
-        window.removeEventListener('blur', onLeave);
-        document.removeEventListener('mouseleave', onLeave);
+        window.removeEventListener('pointermove', onPointerMove, true);
+        document.removeEventListener('pointerover', onPointerOver, true);
+        document.removeEventListener('pointerout', onPointerOut, true);
+        window.removeEventListener('pointerdown', onPointerDown, true);
+        window.removeEventListener('pointerup', onPointerUp, true);
+        window.removeEventListener('pointercancel', onPointerUp, true);
+        window.removeEventListener('blur', onWindowBlur);
         gsap.killTweensOf([root, trail, ring, dot, label]);
       };
     });
+
     return () => media.revert();
   }, []);
 
