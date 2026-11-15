@@ -1346,3 +1346,214 @@ html.has-gsap-cursor [role="button"] {
 @media (max-width: 900px) {
   .redesign-desktop-nav-glass { display:none; }
 }
+
+
+/* Site-wide cursor layer: hide the native pointer over every page surface. */
+html.has-gsap-cursor,
+html.has-gsap-cursor body,
+html.has-gsap-cursor body * {
+  cursor: none !important;
+}
+.custom-cursor {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483647;
+  width: 100vw;
+  height: 100vh;
+  overflow: visible;
+  pointer-events: none;
+  visibility: hidden;
+  contain: none;
+}
+.custom-cursor__trail,
+.custom-cursor__ring,
+.custom-cursor__dot {
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+.custom-cursor__label {
+  pointer-events: none;
+  user-select: none;
+}
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  html.has-gsap-cursor .custom-cursor { visibility: visible; }
+}
+@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .custom-cursor { display: none !important; }
+}
+
+/* One continuous Aceternity-style liquid-glass bar, not a glass nav-link island. */
+.redesign-header {
+  position: sticky;
+  top: 0;
+  z-index: 70;
+  padding: 8px 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  transition: padding .45s cubic-bezier(.22,1,.36,1);
+}
+.redesign-header.is-scrolled { padding: 4px 0; }
+.redesign-header .header-inner {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  min-height: 0;
+  gap: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.redesign-header-glass {
+  display: block;
+  width: 100%;
+  max-width: none;
+  margin-left: auto;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.72);
+  background: rgba(255,255,255,.12);
+  transition: max-width .52s cubic-bezier(.22,1,.36,1), border-radius .52s cubic-bezier(.22,1,.36,1), box-shadow .35s ease, border-color .35s ease;
+}
+.redesign-header-glass.is-scrolled {
+  width: 100%;
+  max-width: 900px;
+  margin-left: auto;
+}
+.redesign-header-content {
+  display: flex;
+  min-height: 78px;
+  align-items: center;
+  gap: 24px;
+  padding: 0 26px;
+  transition: min-height .48s cubic-bezier(.22,1,.36,1), padding .48s cubic-bezier(.22,1,.36,1);
+}
+.redesign-header.is-scrolled .redesign-header-content {
+  min-height: 62px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.redesign-header-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: clamp(18px, 2.6vw, 38px);
+  min-width: 0;
+  margin-left: auto;
+}
+.redesign-header-actions .redesign-desktop-nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(20px, 2.5vw, 36px);
+  margin: 0;
+}
+.redesign-header-actions .redesign-nav-link {
+  padding: 10px 0;
+  color: rgba(32,34,30,.74);
+  font-size: 12px;
+}
+.redesign-header-actions .redesign-nav-link.active { color: var(--ink); }
+.redesign-header-actions .redesign-nav-link::after { background: var(--coral-deep); }
+.redesign-header-magnetic { flex: 0 0 auto; }
+.redesign-header-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 42px;
+  padding: 0 16px;
+  color: var(--ink);
+  background: rgba(255,255,255,.3);
+  border: 1px solid rgba(255,255,255,.74);
+  border-radius: 999px;
+  box-shadow: 0 3px 12px rgba(32,34,30,.06), inset 0 1px 0 rgba(255,255,255,.85);
+  font-size: 11px;
+  transition: color .25s ease, background .25s ease, border-color .25s ease, transform .25s cubic-bezier(.22,1,.36,1);
+}
+.redesign-header-cta:hover {
+  color: #fff;
+  background: var(--coral-deep);
+  border-color: rgba(255,255,255,.75);
+  transform: translateY(-1px);
+}
+.redesign-header-cta svg { transition: transform .25s cubic-bezier(.22,1,.36,1); }
+.redesign-header-cta:hover svg { transform: translate(2px,-2px); }
+.redesign-header .redesign-menu-toggle { display: none; }
+.redesign-header-glass .liquid-glass__content { min-width: 0; }
+
+/* Aceternity's refraction filter is Chromium-only; retain frosted glass elsewhere. */
+.liquid-glass-surface {
+  position: relative;
+  isolation: isolate;
+  border: 1px solid rgba(255,255,255,.72);
+  background: rgba(255,255,255,var(--glass-tint, .12));
+  box-shadow: 0 9px 32px rgba(32,34,30,.085), inset 0 1px 0 rgba(255,255,255,.88), inset 0 -1px 0 rgba(32,34,30,.035);
+  backdrop-filter: blur(.4px) saturate(1.35);
+  -webkit-backdrop-filter: blur(.4px) saturate(1.35);
+}
+@supports (backdrop-filter: url("#liquid-glass-filter")) {
+  .liquid-glass-surface {
+    backdrop-filter: blur(.4px) saturate(1.35);
+    -webkit-backdrop-filter: blur(.4px) saturate(1.35);
+  }
+}
+.liquid-glass__defs { position: absolute; width: 0; height: 0; overflow: hidden; pointer-events: none; }
+.liquid-glass__content { position: relative; z-index: 1; min-width: 0; }
+.liquid-glass__rim {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  border-radius: inherit;
+  padding: max(1px, calc(var(--glass-bevel, 14px) / 14));
+  border: 1px solid rgba(255,255,255,.44);
+  pointer-events: none;
+  background: linear-gradient(142deg, rgba(255,255,255,.84), rgba(255,255,255,.08) 36%, rgba(201,67,50,.13) 72%, rgba(255,255,255,.64));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: .84;
+}
+.liquid-glass-surface::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(125deg, rgba(255,255,255,.28), transparent 40%, rgba(255,255,255,.1) 72%, rgba(255,98,77,.035));
+  pointer-events: none;
+}
+@media (prefers-reduced-transparency: reduce) {
+  .liquid-glass-surface {
+    background: rgba(247,246,241,.97);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+@media (max-width: 900px) {
+  .redesign-header-content { min-height: 68px; padding: 0 18px; }
+  .redesign-header-actions { display: none; }
+  .redesign-header .redesign-menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    margin-left: auto;
+    color: var(--ink);
+    background: rgba(255,255,255,.3);
+    border: 1px solid rgba(255,255,255,.74);
+    border-radius: 50%;
+    box-shadow: 0 3px 12px rgba(32,34,30,.06), inset 0 1px 0 rgba(255,255,255,.85);
+  }
+  .redesign-header-glass.is-scrolled { max-width: min(100%, 620px); }
+  .redesign-header.is-scrolled .redesign-header-content { min-height: 58px; padding-left: 16px; padding-right: 16px; }
+  .redesign-header .header-inner { min-height: 0; }
+}
+@media (max-width: 760px) {
+  .redesign-header { padding: 7px 0; }
+  .redesign-header.is-scrolled { padding: 4px 0; }
+  .redesign-header-content { min-height: 62px; }
+  .redesign-header-glass { border-radius: 22px; }
+  .redesign-header-glass.is-scrolled { border-radius: 999px; }
+}
