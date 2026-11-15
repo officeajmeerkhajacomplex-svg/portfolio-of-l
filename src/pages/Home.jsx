@@ -212,7 +212,7 @@ export default function Home() {
           <span>HAVE SOMETHING GOOD IN MIND?</span>
         </div>
         <div className="editorial-contact-cta__body">
-          <h2>Let’s make<br /><em>it matter.</em></h2>
+          <h2>Have a good<br /><em>one in mind?</em></h2>
           <div className="editorial-contact-cta__aside">
             <p>Big brief, small question or a half-formed idea. The best things usually start with a conversation.</p>
             <p className="editorial-contact-cta__note">Have a good one in mind? Tell me what you’re dreaming up. We’ll figure out how to bring it into the world.</p>
