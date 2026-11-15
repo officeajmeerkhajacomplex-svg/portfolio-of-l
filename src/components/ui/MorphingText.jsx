@@ -8,7 +8,7 @@ import { gsap } from '../../lib/gsap';
  * shifts the headline. The transition uses a short, subtle blur only while
  * crossfading; each word remains perfectly sharp during its reading interval.
  */
-export default function MorphingText({ texts = [], className = '' }) {
+export function MorphingText({ texts = [], className = '' }) {
   const wrapRef = useRef(null);
   const firstRef = useRef(null);
   const secondRef = useRef(null);
@@ -96,3 +96,5 @@ export default function MorphingText({ texts = [], className = '' }) {
     </span>
   );
 }
+
+export default MorphingText;
