@@ -35,7 +35,8 @@
   mix-blend-mode: normal;
 }
 ::view-transition-new(root) {
-  animation: liyaqat-theme-reveal var(--theme-toggle-duration, 400ms) cubic-bezier(.22,1,.36,1) both;
+  animation: liyaqat-theme-reveal var(--theme-toggle-duration, 1100ms) cubic-bezier(.45,0,.25,1) both;
+  will-change: clip-path;
 }
 @keyframes liyaqat-theme-reveal {
   from { clip-path: circle(0 at var(--theme-toggle-x, 50vw) var(--theme-toggle-y, 50vh)); }
@@ -345,23 +346,6 @@ html.dark .button-accent:hover {
 .animated-theme-toggler:disabled {
   cursor: default;
   opacity: 1;
-}
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation-duration: var(--theme-toggle-duration, 1100ms);
-  animation-timing-function: cubic-bezier(.45,0,.25,1);
-}
-::view-transition-new(root) {
-  animation-name: liyaqat-theme-reveal;
-  will-change: clip-path;
-}
-@keyframes liyaqat-theme-reveal {
-  from {
-    clip-path: circle(0 at var(--theme-toggle-x, 50vw) var(--theme-toggle-y, 50vh));
-  }
-  to {
-    clip-path: circle(150vmax at var(--theme-toggle-x, 50vw) var(--theme-toggle-y, 50vh));
-  }
 }
 
 /* Dark-mode finish: tune every light-only accent surface while leaving the
