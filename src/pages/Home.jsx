@@ -15,7 +15,7 @@ import LottieMark from '../components/LottieMark';
 import orbitMark from '../assets/orbit-mark.json';
 import { gsap } from '../lib/gsap';
 
-const HERO_MORPH_WORDS = ['feeling', 'Code', 'Design', 'Motion', 'capture'];
+const HERO_MORPH_WORDS = ['feeling', 'code', 'design', 'motion', 'capture'];
 
 function HeroObject() {
   const ref = useRef(null);
