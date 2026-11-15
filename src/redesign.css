@@ -1275,25 +1275,47 @@ html.has-gsap-cursor [role="button"] {
 }
 
 
-/* Magic UI-style morphing word: SVG goo threshold merges the two GSAP layers. */
+/* Magic UI-inspired morph: each word occupies one stable grid cell.
+   No persistent SVG goo filter, so the text stays crisp between transitions. */
 .morphing-text {
   position: relative;
-  display: inline-block;
+  display: inline-grid;
+  grid-template-areas: "word";
+  align-items: baseline;
   vertical-align: baseline;
-  isolation: isolate;
-  filter: url(#morphing-text-goo);
   white-space: nowrap;
+  isolation: isolate;
+  line-height: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  font-kerning: normal;
+  font-feature-settings: "kern" 1, "liga" 1;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
-.morphing-text__filter { position: absolute; width: 0; height: 0; overflow: hidden; }
-.morphing-text__sizer { display: inline-block; visibility: hidden; pointer-events: none; }
+.morphing-text__sizer,
 .morphing-text__layer {
-  position: absolute;
-  inset: 0;
+  grid-area: word;
   display: block;
-  width: 100%;
-  text-align: left;
-  transform-origin: 50% 55%;
-  will-change: opacity, filter, transform;
+  white-space: nowrap;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  line-height: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+}
+.morphing-text__sizer {
+  visibility: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+.morphing-text__layer {
+  position: relative;
+  transform-origin: 50% 65%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  will-change: opacity, transform, filter;
 }
 
 /* Aceternity-inspired liquid glass nav; refractive SVG filter in Chromium,

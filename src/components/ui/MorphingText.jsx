@@ -2,10 +2,13 @@ import { useLayoutEffect, useRef } from 'react';
 import { gsap } from '../../lib/gsap';
 
 /**
- * Magic UI-inspired gooey morph, orchestrated with GSAP.
- * The two live layers overlap through an SVG alpha-threshold filter.
+ * A crisp, readable Magic UI-style word morph.
+ *
+ * Two words share the same measured grid cell, so changing word length never
+ * shifts the headline. The transition uses a short, subtle blur only while
+ * crossfading; each word remains perfectly sharp during its reading interval.
  */
-export default function MorphingText({ texts = [], className = '' }) {
+export function MorphingText({ texts = [], className = '' }) {
   const wrapRef = useRef(null);
   const firstRef = useRef(null);
   const secondRef = useRef(null);
@@ -14,54 +17,84 @@ export default function MorphingText({ texts = [], className = '' }) {
     const wrap = wrapRef.current;
     const layers = [firstRef.current, secondRef.current];
     if (!wrap || !layers[0] || !layers[1] || texts.length < 2) return undefined;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
 
-    let active = 0;
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    gsap.set(layers[0], { autoAlpha: 1, clearProps: 'filter,transform' });
+    gsap.set(layers[1], { autoAlpha: 0, clearProps: 'filter,transform' });
+    if (reducedMotion) return undefined;
+
+    let activeLayer = 0;
     let wordIndex = 0;
-    let pause;
+    let delayCall = null;
+    let transition = null;
 
-    gsap.set(layers[0], { autoAlpha: 1, filter: 'blur(0px)', scale: 1, y: 0 });
-    gsap.set(layers[1], { autoAlpha: 0, filter: 'blur(12px)', scale: 0.96, y: 8 });
-
-    const advance = () => {
-      const next = 1 - active;
+    const showNextWord = () => {
+      const nextLayer = 1 - activeLayer;
       wordIndex = (wordIndex + 1) % texts.length;
-      layers[next].textContent = texts[wordIndex];
-      gsap.set(layers[next], { autoAlpha: 0, filter: 'blur(12px)', scale: 0.96, y: 8 });
 
-      gsap.timeline({
-        defaults: { ease: 'power3.inOut' },
+      // Set content only on the hidden layer. No layout measurement or reflow.
+      layers[nextLayer].textContent = texts[wordIndex];
+      gsap.set(layers[nextLayer], {
+        autoAlpha: 0,
+        y: 3,
+        filter: 'blur(1px)',
+      });
+
+      transition = gsap.timeline({
+        defaults: { ease: 'power2.out' },
         onComplete: () => {
-          gsap.set(layers[active], { autoAlpha: 0, clearProps: 'filter,transform' });
-          active = next;
-          pause = gsap.delayedCall(1.65, advance);
+          gsap.set(layers[activeLayer], {
+            autoAlpha: 0,
+            clearProps: 'filter,transform',
+          });
+          gsap.set(layers[nextLayer], {
+            autoAlpha: 1,
+            clearProps: 'filter,transform',
+          });
+          activeLayer = nextLayer;
+          delayCall = gsap.delayedCall(2.35, showNextWord);
         },
-      })
-        .to(layers[active], { autoAlpha: 0, filter: 'blur(12px)', scale: 1.035, y: -5, duration: 0.48 }, 0)
-        .to(layers[next], { autoAlpha: 1, filter: 'blur(0px)', scale: 1, y: 0, duration: 0.68 }, 0.08);
+      });
+
+      // Short, restrained dissolve: avoid the heavy blur that made the glyphs
+      // merge into illegible shapes in the previous implementation.
+      transition
+        .to(layers[activeLayer], {
+          autoAlpha: 0,
+          y: -2,
+          filter: 'blur(1px)',
+          duration: 0.24,
+        }, 0)
+        .to(layers[nextLayer], {
+          autoAlpha: 1,
+          y: 0,
+          filter: 'blur(0px)',
+          duration: 0.32,
+        }, 0.04);
     };
 
-    pause = gsap.delayedCall(2.1, advance);
+    delayCall = gsap.delayedCall(2.4, showNextWord);
+
     return () => {
-      pause?.kill();
+      delayCall?.kill();
+      transition?.kill();
       gsap.killTweensOf(layers);
+      gsap.set(layers, { clearProps: 'all' });
     };
   }, [texts]);
 
+  const widestWord = texts.reduce(
+    (widest, word) => word.length >= widest.length ? word : widest,
+    '',
+  );
+
   return (
-    <span className={`morphing-text ${className}`} ref={wrapRef} aria-hidden="true">
-      <svg className="morphing-text__filter" aria-hidden="true" focusable="false">
-        <defs>
-          <filter id="morphing-text-goo">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur" />
-            <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -9" result="goo" />
-            <feComposite in="SourceGraphic" in2="goo" operator="atop" />
-          </filter>
-        </defs>
-      </svg>
-      <span className="morphing-text__sizer">{texts[4] || texts.reduce((longest, word) => word.length > longest.length ? word : longest, '')}</span>
-      <span className="morphing-text__layer" ref={firstRef}>{texts[0]}</span>
-      <span className="morphing-text__layer" ref={secondRef}>{texts[1]}</span>
+    <span className={'morphing-text ' + className} ref={wrapRef} aria-hidden="true">
+      <span className="morphing-text__sizer" aria-hidden="true">{widestWord}</span>
+      <span className="morphing-text__layer" ref={firstRef}>{texts[0] || ''}</span>
+      <span className="morphing-text__layer" ref={secondRef}>{texts[1] || texts[0] || ''}</span>
     </span>
   );
 }
+
+export default MorphingText;
