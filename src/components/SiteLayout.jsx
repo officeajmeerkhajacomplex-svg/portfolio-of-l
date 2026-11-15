@@ -20,12 +20,19 @@ const navItems = [
   { label: 'Services', to: '/services' },
 ];
 
+const getCompactNavWidth = () => {
+  if (typeof window === 'undefined') return '100%';
+  const viewportWidth = window.innerWidth;
+  const pageGutter = Math.min(112, Math.max(22, viewportWidth * 0.064));
+  const contentWidth = Math.max(1, viewportWidth - pageGutter * 2);
+  const targetWidth = Math.min(contentWidth, viewportWidth <= 900 ? 620 : 900);
+  return `${(targetWidth / contentWidth) * 100}%`;
+};
+
 export function Header() {
   const [open, setOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [compactWidth, setCompactWidth] = useState(() => (
-    typeof window !== 'undefined' && window.innerWidth <= 900 ? 620 : 900
-  ));
+  const [compactWidth, setCompactWidth] = useState(getCompactNavWidth);
   const location = useLocation();
   const shouldReduceMotion = useReducedMotion();
   const { scrollY } = useScroll();
@@ -37,7 +44,7 @@ export function Header() {
     restDelta: 0.001,
   });
   const compactProgress = shouldReduceMotion ? rawCompactProgress : springCompactProgress;
-  const navMaxWidth = useTransform(compactProgress, [0, 1], ['100%', `${compactWidth}px`]);
+  const navMaxWidth = useTransform(compactProgress, [0, 1], ['100%', compactWidth]);
   const navRadius = useTransform(compactProgress, [0, 1], [28, 999]);
   const navHeight = useTransform(compactProgress, [0, 1], [78, 62]);
   const navInset = useTransform(compactProgress, [0, 1], [26, 20]);
@@ -59,7 +66,7 @@ export function Header() {
   }, []);
 
   useEffect(() => {
-    const updateCompactWidth = () => setCompactWidth(window.innerWidth <= 900 ? 620 : 900);
+    const updateCompactWidth = () => setCompactWidth(getCompactNavWidth());
     updateCompactWidth();
     window.addEventListener('resize', updateCompactWidth, { passive: true });
     return () => window.removeEventListener('resize', updateCompactWidth);
