@@ -4,6 +4,7 @@ import { ArrowDownRight, ArrowUpRight, Download, Menu, X } from 'lucide-react';
 import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion';
 import { siteConfig } from '../data';
 import GsapMagnetic from './ui/GsapMagnetic';
+import LiquidGlass from './ui/LiquidGlass';
 
 export function ScrollProgress() {
   const { scrollYProgress } = useScroll();
@@ -29,7 +30,8 @@ export function Header() {
         <Link to="/" className="wordmark redesign-wordmark" aria-label="LIYAQAT home">
           LIYAQAT<span className="registered">®</span><span className="wordmark-dot" />
         </Link>
-        <nav className="desktop-nav redesign-desktop-nav" aria-label="Main navigation">
+        <LiquidGlass className="redesign-desktop-nav-glass" radius={999} bevelDepth={12} scale={28} aberration={2} frost={4} tint={0.13}>
+          <nav className="desktop-nav redesign-desktop-nav" aria-label="Main navigation">
           {navItems.map((item) => (
             <NavLink
               key={item.to}
@@ -41,6 +43,7 @@ export function Header() {
             </NavLink>
           ))}
         </nav>
+        </LiquidGlass>
         <GsapMagnetic className="gsap-magnetic-wrap" strength={0.16}>
           <Link to="/contact" className="header-cta redesign-header-cta">
             <span>Let’s talk</span><ArrowUpRight size={15} strokeWidth={1.8} />
