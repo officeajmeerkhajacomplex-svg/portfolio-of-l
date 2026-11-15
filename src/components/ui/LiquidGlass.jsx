@@ -1,4 +1,5 @@
 import { forwardRef, useId } from 'react';
+import { motion } from 'framer-motion';
 
 const LiquidGlass = forwardRef(function LiquidGlass({
   children,
@@ -26,7 +27,7 @@ const LiquidGlass = forwardRef(function LiquidGlass({
   };
 
   return (
-    <div
+    <motion.div
       ref={ref}
       className={'liquid-glass-surface ' + className}
       style={glassStyle}
@@ -82,7 +83,7 @@ const LiquidGlass = forwardRef(function LiquidGlass({
       </svg>
       <div className={'liquid-glass__content ' + contentClassName}>{children}</div>
       <span className="liquid-glass__rim" aria-hidden="true" />
-    </div>
+    </motion.div>
   );
 });
 
