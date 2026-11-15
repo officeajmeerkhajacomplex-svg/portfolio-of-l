@@ -331,3 +331,160 @@ html.dark .button-accent:hover {
   ::view-transition-new(root) { animation: none !important; }
   .animated-theme-toggler { transition: none !important; }
 }
+
+
+/* Slower, calmer theme reveal. The circle now has time to travel across the
+   entire layout instead of snapping over the page. */
+.animated-theme-toggler {
+  transition-duration: .35s, .35s, .35s, .7s, .35s;
+}
+.animated-theme-toggler svg {
+  transition: transform .82s cubic-bezier(.45,0,.25,1);
+}
+.animated-theme-toggler[aria-pressed="true"] svg { transform: rotate(180deg); }
+.animated-theme-toggler:disabled {
+  cursor: wait;
+  opacity: .74;
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(--theme-toggle-duration, 1100ms);
+  animation-timing-function: cubic-bezier(.45,0,.25,1);
+}
+::view-transition-new(root) {
+  animation-name: liyaqat-theme-reveal;
+  will-change: clip-path;
+}
+@keyframes liyaqat-theme-reveal {
+  from {
+    clip-path: circle(0 at var(--theme-toggle-x, 50vw) var(--theme-toggle-y, 50vh));
+  }
+  to {
+    clip-path: circle(150vmax at var(--theme-toggle-x, 50vw) var(--theme-toggle-y, 50vh));
+  }
+}
+
+/* Dark-mode finish: tune every light-only accent surface while leaving the
+   colourful project artwork itself intact. */
+html.dark .redesign-hero-art {
+  border-color: rgba(240,238,229,.12);
+  background:
+    radial-gradient(ellipse at 48% 43%, #292923 0%, #20211c 46%, #171814 100%);
+  box-shadow: 15px 18px 48px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.045);
+}
+html.dark .redesign-hero-art::before {
+  opacity: .48;
+  background-image:
+    linear-gradient(rgba(240,238,229,.065) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(240,238,229,.065) 1px, transparent 1px);
+}
+html.dark .redesign-hero-art .hero-art-caption { color: rgba(240,238,229,.6); }
+html.dark .redesign-hero-art .hero-art-foot { color: rgba(240,238,229,.72); }
+html.dark .redesign-hero-art .hero-art-index { color: rgba(240,238,229,.68); }
+html.dark .redesign-hero-art .hero-orbital { border-color: rgba(255,136,116,.32); }
+html.dark .redesign-hero-art .hero-orbital::before,
+html.dark .redesign-hero-art .hero-orbital::after { border-color: rgba(255,136,116,.2); }
+html.dark .redesign-hero-art .orbital-b { border-color: rgba(240,238,229,.19); }
+html.dark .redesign-hero-art .orbital-b::before { border-color: rgba(240,238,229,.14); }
+html.dark .redesign-hero-art .object-core {
+  box-shadow:
+    inset -17px -19px 36px rgba(65,18,15,.34),
+    inset 9px 9px 25px rgba(255,255,255,.72),
+    0 25px 58px rgba(0,0,0,.32),
+    0 0 76px rgba(255,113,93,.2);
+}
+html.dark .redesign-hero-art .object-ring { border-color: rgba(255,136,116,.56); }
+html.dark .redesign-hero-art .ring-b { border-color: rgba(240,238,229,.82); }
+html.dark .redesign-hero-art .hero-floating-chip {
+  color: #f0eee5;
+  background: rgba(35,36,30,.84);
+  border-color: rgba(255,255,255,.18);
+  box-shadow: 8px 11px 28px rgba(0,0,0,.26), inset 0 1px 0 rgba(255,255,255,.1);
+}
+html.dark .redesign-hero-art .hero-floating-chip span { color: var(--coral); }
+html.dark .redesign-hero-art .cross-b { color: rgba(240,238,229,.72); }
+
+/* Project cards: keep the original artwork vivid, and theme the surrounding
+   glass edge, invitation pill, tags, and metadata surfaces. */
+html.dark .project-card .magic-card {
+  background: linear-gradient(145deg, rgba(255,255,255,.2), rgba(255,255,255,.025) 62%, rgba(255,136,116,.14));
+}
+html.dark .project-art-invitation {
+  color: var(--ink);
+  background: rgba(29,30,25,.86);
+  border-color: rgba(255,255,255,.2);
+  box-shadow: 0 7px 22px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.12);
+}
+html.dark .project-card:hover .project-art-invitation {
+  color: #171814;
+  background: var(--coral);
+  border-color: var(--coral);
+}
+html.dark .project-card__tag {
+  color: var(--muted-ink);
+  background: #252620;
+  border-color: rgba(240,238,229,.13);
+  box-shadow: 3px 3px 8px rgba(0,0,0,.16), -3px -3px 8px rgba(255,255,255,.015);
+}
+html.dark .project-card__footer { border-top-color: var(--rule); }
+html.dark .project-card__action { color: var(--quiet-ink); }
+html.dark .project-card__action:hover { color: var(--coral-deep); }
+
+/* Make coral-filled actions use dark ink for clear contrast in night mode. */
+html.dark .editorial-button--coral,
+html.dark .redesign-work-page .circle-link,
+html.dark .button-primary,
+html.dark .button-accent {
+  color: #171814;
+}
+html.dark .editorial-button--coral {
+  background: var(--coral);
+  border-color: var(--coral);
+  box-shadow: 0 9px 24px rgba(255,113,93,.17);
+}
+html.dark .editorial-button--coral:hover {
+  color: var(--ink);
+  background: transparent;
+  border-color: var(--coral);
+}
+html.dark .redesign-work-page .circle-link {
+  background: var(--coral);
+  border-color: var(--coral);
+}
+html.dark .redesign-work-page .circle-link:hover {
+  color: #171814;
+  background: var(--coral);
+  border-color: var(--coral);
+}
+html.dark .button-primary,
+html.dark .button-accent {
+  background: var(--coral);
+  border-color: var(--coral);
+}
+html.dark .button-primary:hover,
+html.dark .button-accent:hover {
+  color: var(--ink);
+  background: transparent;
+  border-color: var(--coral);
+}
+
+/* Consistent transition cues and focus visibility throughout the site. */
+html.dark .redesign-header,
+html.dark .liquid-glass-surface,
+html.dark .animated-theme-toggler,
+html.dark .project-art-invitation,
+html.dark .project-card__tag,
+html.dark .redesign-about-page .principle-card,
+html.dark .redesign-services-page .services-cta,
+html.dark .redesign-contact-page .contact-sticker,
+html.dark .redesign-contact-page .contact-form {
+  border-color: var(--rule);
+}
+html.dark :focus-visible {
+  outline-color: var(--coral);
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) { animation: none !important; }
+  .animated-theme-toggler svg { transition: none !important; transform: none !important; }
+}
