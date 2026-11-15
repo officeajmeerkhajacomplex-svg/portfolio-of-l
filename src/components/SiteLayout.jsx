@@ -1,8 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { ArrowDownRight, ArrowUpRight, Download, Menu, X } from 'lucide-react';
-import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion';
-import { gsap } from '../lib/gsap';
+import { AnimatePresence, motion, useReducedMotion, useScroll, useSpring, useTransform } from 'framer-motion';
 import { siteConfig } from '../data';
 import GsapMagnetic from './ui/GsapMagnetic';
 import LiquidGlass from './ui/LiquidGlass';
@@ -21,12 +20,38 @@ const navItems = [
   { label: 'Services', to: '/services' },
 ];
 
+const getCompactNavWidth = () => {
+  if (typeof window === 'undefined') return '100%';
+  const viewportWidth = window.innerWidth;
+  const pageGutter = Math.min(112, Math.max(22, viewportWidth * 0.064));
+  const contentWidth = Math.max(1, viewportWidth - pageGutter * 2);
+  const targetWidth = Math.min(contentWidth, viewportWidth <= 900 ? 620 : 900);
+  return `${(targetWidth / contentWidth) * 100}%`;
+};
+
 export function Header() {
   const [open, setOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [compactWidth, setCompactWidth] = useState(getCompactNavWidth);
   const location = useLocation();
-  const glassRef = useRef(null);
-  const contentRef = useRef(null);
+  const shouldReduceMotion = useReducedMotion();
+  const { scrollY } = useScroll();
+  const rawCompactProgress = useTransform(scrollY, [0, 180], [0, 1], { clamp: true });
+  const springCompactProgress = useSpring(rawCompactProgress, {
+    stiffness: 85,
+    damping: 25,
+    mass: 0.9,
+    restDelta: 0.001,
+  });
+  const compactProgress = shouldReduceMotion ? rawCompactProgress : springCompactProgress;
+  const navMaxWidth = useTransform(compactProgress, [0, 1], ['100%', compactWidth]);
+  const navRadius = useTransform(compactProgress, [0, 1], [28, 999]);
+  const navHeight = useTransform(compactProgress, [0, 1], [78, 62]);
+  const navInset = useTransform(compactProgress, [0, 1], [26, 20]);
+  const navShadow = useTransform(compactProgress, [0, 1], [
+    '0 8px 28px rgba(32,34,30,.075), 0 1px 0 rgba(255,255,255,.9) inset',
+    '0 12px 38px rgba(32,34,30,.12), 0 1px 0 rgba(255,255,255,.82) inset',
+  ]);
 
   useEffect(() => setOpen(false), [location.pathname]);
 
@@ -41,50 +66,29 @@ export function Header() {
   }, []);
 
   useEffect(() => {
-    const glass = glassRef.current;
-    const content = contentRef.current;
-    if (!glass || !content) return undefined;
-
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const targets = {
-      borderRadius: isScrolled ? 999 : 28,
-      boxShadow: isScrolled
-        ? '0 12px 38px rgba(32,34,30,.12), 0 1px 0 rgba(255,255,255,.82) inset'
-        : '0 8px 28px rgba(32,34,30,.075), 0 1px 0 rgba(255,255,255,.9) inset',
-    };
-
-    if (reduced) {
-      gsap.set(glass, targets);
-      gsap.set(content, { minHeight: isScrolled ? 62 : 78 });
-      return undefined;
-    }
-
-    gsap.to(glass, { ...targets, duration: 0.48, ease: 'power3.out', overwrite: true });
-    gsap.to(content, {
-      minHeight: isScrolled ? 62 : 78,
-      paddingLeft: isScrolled ? 20 : 26,
-      paddingRight: isScrolled ? 20 : 26,
-      duration: 0.48,
-      ease: 'power3.out',
-      overwrite: true,
-    });
-    return () => gsap.killTweensOf([glass, content]);
-  }, [isScrolled]);
+    const updateCompactWidth = () => setCompactWidth(getCompactNavWidth());
+    updateCompactWidth();
+    window.addEventListener('resize', updateCompactWidth, { passive: true });
+    return () => window.removeEventListener('resize', updateCompactWidth);
+  }, []);
 
   return (
     <header className={'site-header redesign-header' + (isScrolled ? ' is-scrolled' : '')}>
       <div className="header-inner page-gutter">
         <LiquidGlass
-          ref={glassRef}
-          className={'redesign-header-glass' + (isScrolled ? ' is-scrolled' : '')}
-          radius={isScrolled ? 999 : 28}
+          className="redesign-header-glass"
+          radius={28}
+          style={{ maxWidth: navMaxWidth, borderRadius: navRadius, boxShadow: navShadow }}
           scale={48}
           aberration={14}
           bevelDepth={37}
           frost={0.4}
           tint={0.12}
         >
-          <div className="redesign-header-content" ref={contentRef}>
+          <motion.div
+            className="redesign-header-content"
+            style={{ minHeight: navHeight, paddingLeft: navInset, paddingRight: navInset }}
+          >
             <Link to="/" className="wordmark redesign-wordmark" aria-label="LIYAQAT home">
               LIYAQAT<span className="registered">®</span><span className="wordmark-dot" />
             </Link>
@@ -117,7 +121,7 @@ export function Header() {
             >
               {open ? <X size={21} /> : <Menu size={21} />}
             </button>
-          </div>
+          </motion.div>
         </LiquidGlass>
       </div>
 
