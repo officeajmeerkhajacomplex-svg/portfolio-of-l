@@ -1597,3 +1597,39 @@ html.has-gsap-cursor .custom-cursor {
   html.has-gsap-cursor body,
   html.has-gsap-cursor body * { cursor: auto !important; }
 }
+
+
+/* Magic UI SmoothCursor — use the coral brand pointer and hide the native
+   pointer only while a visible custom pointer is already following the mouse. */
+html.has-smooth-cursor,
+html.has-smooth-cursor body,
+html.has-smooth-cursor body * {
+  cursor: none !important;
+}
+html.has-smooth-cursor input,
+html.has-smooth-cursor textarea,
+html.has-smooth-cursor select,
+html.has-smooth-cursor [contenteditable="true"] {
+  cursor: text !important;
+}
+.liyaqat-smooth-cursor {
+  position: fixed !important;
+  z-index: 2147483647 !important;
+  pointer-events: none !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  contain: layout style;
+}
+.liyaqat-smooth-cursor svg {
+  display: block;
+  overflow: visible;
+  pointer-events: none !important;
+}
+@media (any-hover: none), (prefers-reduced-motion: reduce) {
+  .liyaqat-smooth-cursor { display: none !important; }
+  html.has-smooth-cursor,
+  html.has-smooth-cursor body,
+  html.has-smooth-cursor body * {
+    cursor: auto !important;
+  }
+}
