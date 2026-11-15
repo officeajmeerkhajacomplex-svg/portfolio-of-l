@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { ArrowDownRight, ArrowUpRight, Download, Menu, X } from 'lucide-react';
 import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion';
+import { gsap } from '../lib/gsap';
 import { siteConfig } from '../data';
 import GsapMagnetic from './ui/GsapMagnetic';
 import LiquidGlass from './ui/LiquidGlass';
@@ -21,53 +22,112 @@ const navItems = [
 
 export function Header() {
   const [open, setOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+  const glassRef = useRef(null);
+  const contentRef = useRef(null);
+
   useEffect(() => setOpen(false), [location.pathname]);
 
+  useEffect(() => {
+    const updateScrollState = () => {
+      const next = window.scrollY > 42;
+      setIsScrolled((current) => current === next ? current : next);
+    };
+    updateScrollState();
+    window.addEventListener('scroll', updateScrollState, { passive: true });
+    return () => window.removeEventListener('scroll', updateScrollState);
+  }, []);
+
+  useEffect(() => {
+    const glass = glassRef.current;
+    const content = contentRef.current;
+    if (!glass || !content) return undefined;
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const targets = {
+      borderRadius: isScrolled ? 999 : 28,
+      boxShadow: isScrolled
+        ? '0 12px 38px rgba(32,34,30,.12), 0 1px 0 rgba(255,255,255,.82) inset'
+        : '0 8px 28px rgba(32,34,30,.075), 0 1px 0 rgba(255,255,255,.9) inset',
+    };
+
+    if (reduced) {
+      gsap.set(glass, targets);
+      gsap.set(content, { minHeight: isScrolled ? 62 : 78 });
+      return undefined;
+    }
+
+    gsap.to(glass, { ...targets, duration: 0.48, ease: 'power3.out', overwrite: true });
+    gsap.to(content, {
+      minHeight: isScrolled ? 62 : 78,
+      paddingLeft: isScrolled ? 20 : 26,
+      paddingRight: isScrolled ? 20 : 26,
+      duration: 0.48,
+      ease: 'power3.out',
+      overwrite: true,
+    });
+    return () => gsap.killTweensOf([glass, content]);
+  }, [isScrolled]);
+
   return (
-    <header className="site-header redesign-header">
+    <header className={'site-header redesign-header' + (isScrolled ? ' is-scrolled' : '')}>
       <div className="header-inner page-gutter">
-        <Link to="/" className="wordmark redesign-wordmark" aria-label="LIYAQAT home">
-          LIYAQAT<span className="registered">®</span><span className="wordmark-dot" />
-        </Link>
-        <LiquidGlass className="redesign-desktop-nav-glass" radius={999} bevelDepth={12} scale={28} aberration={2} frost={4} tint={0.13}>
-          <nav className="desktop-nav redesign-desktop-nav" aria-label="Main navigation">
-          {navItems.map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              end={item.to === '/'}
-              className={({ isActive }) => `nav-link redesign-nav-link${isActive ? ' active' : ''}`}
-            >
-              {item.label}
-            </NavLink>
-          ))}
-        </nav>
-        </LiquidGlass>
-        <GsapMagnetic className="gsap-magnetic-wrap" strength={0.16}>
-          <Link to="/contact" className="header-cta redesign-header-cta">
-            <span>Let’s talk</span><ArrowUpRight size={15} strokeWidth={1.8} />
-          </Link>
-        </GsapMagnetic>
-        <button
-          className="menu-toggle redesign-menu-toggle"
-          aria-label={open ? 'Close menu' : 'Open menu'}
-          aria-expanded={open}
-          aria-controls="mobile-navigation"
-          onClick={() => setOpen(!open)}
+        <LiquidGlass
+          ref={glassRef}
+          className={'redesign-header-glass' + (isScrolled ? ' is-scrolled' : '')}
+          radius={isScrolled ? 999 : 28}
+          scale={48}
+          aberration={14}
+          bevelDepth={37}
+          frost={0.4}
+          tint={0.12}
         >
-          {open ? <X size={21} /> : <Menu size={21} />}
-        </button>
+          <div className="redesign-header-content" ref={contentRef}>
+            <Link to="/" className="wordmark redesign-wordmark" aria-label="LIYAQAT home">
+              LIYAQAT<span className="registered">®</span><span className="wordmark-dot" />
+            </Link>
+            <div className="redesign-header-actions">
+              <nav className="desktop-nav redesign-desktop-nav" aria-label="Main navigation">
+                {navItems.map((item) => (
+                  <NavLink
+                    key={item.to}
+                    to={item.to}
+                    end={item.to === '/'}
+                    className={({ isActive }) => 'nav-link redesign-nav-link' + (isActive ? ' active' : '')}
+                  >
+                    {item.label}
+                  </NavLink>
+                ))}
+              </nav>
+              <GsapMagnetic className="gsap-magnetic-wrap redesign-header-magnetic" strength={0.1}>
+                <Link to="/contact" className="header-cta redesign-header-cta" data-cursor="SAY HELLO">
+                  <span>Let’s talk</span><ArrowUpRight size={15} strokeWidth={1.8} />
+                </Link>
+              </GsapMagnetic>
+            </div>
+            <button
+              className="menu-toggle redesign-menu-toggle"
+              aria-label={open ? 'Close menu' : 'Open menu'}
+              aria-expanded={open}
+              aria-controls="mobile-navigation"
+              onClick={() => setOpen(!open)}
+            >
+              {open ? <X size={21} /> : <Menu size={21} />}
+            </button>
+          </div>
+        </LiquidGlass>
       </div>
+
       <AnimatePresence>
         {open && (
           <motion.nav
             id="mobile-navigation"
             className="mobile-nav redesign-mobile-nav"
             aria-label="Mobile navigation"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
+            initial={{ opacity: 0, height: 0, y: -8 }}
+            animate={{ opacity: 1, height: 'auto', y: 0 }}
+            exit={{ opacity: 0, height: 0, y: -8 }}
             transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
           >
             {navItems.map((item, index) => (
@@ -80,13 +140,13 @@ export function Header() {
                 <NavLink
                   to={item.to}
                   end={item.to === '/'}
-                  className={({ isActive }) => `mobile-nav-link redesign-mobile-nav-link${isActive ? ' active' : ''}`}
+                  className={({ isActive }) => 'mobile-nav-link redesign-mobile-nav-link' + (isActive ? ' active' : '')}
                 >
                   {item.label}<ArrowDownRight size={18} />
                 </NavLink>
               </motion.div>
             ))}
-            <Link to="/contact" className="mobile-nav-contact redesign-mobile-nav-contact">
+            <Link to="/contact" className="mobile-nav-contact redesign-mobile-nav-contact" data-cursor="START">
               Start a project <ArrowUpRight size={18} />
             </Link>
           </motion.nav>
@@ -119,8 +179,8 @@ export function Footer() {
           </div>
           <div>
             <span className="redesign-footer__label">SAY HELLO</span>
-            <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
-            <a href={`${import.meta.env.BASE_URL}resume.pdf`} download="LIYAQAT-Resume.pdf">Download résumé <Download size={13} /></a>
+            <a href={'mailto:' + siteConfig.email}>{siteConfig.email}</a>
+            <a href={import.meta.env.BASE_URL + 'resume.pdf'} download="LIYAQAT-Resume.pdf">Download résumé <Download size={13} /></a>
             <span className="redesign-footer__availability"><i /> {siteConfig.availability}</span>
           </div>
         </div>
