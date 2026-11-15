@@ -1655,3 +1655,27 @@ html.has-smooth-cursor [contenteditable="true"] {
     cursor: auto !important;
   }
 }
+
+
+/* Character segments used by the hero's blurInUp TextAnimate. */
+.text-animate__container {
+  display: inline-block;
+  white-space: pre-wrap;
+  line-height: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+}
+.text-animate__segment {
+  display: inline-block;
+  white-space: pre;
+  line-height: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  vertical-align: baseline;
+  will-change: transform, opacity, filter;
+}
+.text-animate__container .text-animate__segment:last-child { margin-right: 0; }
+.morphing-text__animated-word { display: inline-block; white-space: nowrap; }
+@media (prefers-reduced-motion: reduce) {
+  .text-animate__segment { filter: none !important; transform: none !important; }
+}
