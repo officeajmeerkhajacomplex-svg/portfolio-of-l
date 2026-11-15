@@ -117,9 +117,9 @@ export default function Home() {
           </p>
 
           <div className="editorial-hero__actions">
-            <Link className="editorial-button editorial-button--dark" to="/work">
-              Explore selected work <MoveUpRight size={16} />
-            </Link>
+            <a className="editorial-button editorial-button--dark" href={`${import.meta.env.BASE_URL}resume.pdf`} download="LIYAQAT-Resume.pdf">
+              Download résumé <MoveUpRight size={16} />
+            </a>
             <Link className="editorial-text-link" to="/about">
               A bit about me <ArrowUpRight size={15} />
             </Link>
