@@ -157,7 +157,15 @@ export default function CustomCursor() {
         resetHover();
       };
 
-      const onPointerDown = () => gsap.to(ring, { scale: 0.82, duration: 0.1, ease: 'power2.out', overwrite: true });
+      const onPointerDown = (event) => {
+        if (event.pointerType === 'touch') return;
+        // Some browsers may dispatch a press before the first move after mount.
+        if (!visible) {
+          revealAt(event.clientX, event.clientY);
+          setHoverTarget(document.elementFromPoint(event.clientX, event.clientY));
+        }
+        gsap.to(ring, { scale: 0.82, duration: 0.1, ease: 'power2.out', overwrite: true });
+      };
       const onPointerUp = () => gsap.to(ring, {
         scale: activeTarget ? 1.24 : 1,
         duration: 0.2,
