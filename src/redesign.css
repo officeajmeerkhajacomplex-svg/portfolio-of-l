@@ -1273,3 +1273,76 @@ html.has-gsap-cursor [role="button"] {
   .editorial-contact-cta::before { right: -30%; width: 360px; }
   .editorial-contact-cta::after { right: -8%; width: 240px; }
 }
+
+
+/* Magic UI-style morphing word: SVG goo threshold merges the two GSAP layers. */
+.morphing-text {
+  position: relative;
+  display: inline-block;
+  vertical-align: baseline;
+  isolation: isolate;
+  filter: url(#morphing-text-goo);
+  white-space: nowrap;
+}
+.morphing-text__filter { position: absolute; width: 0; height: 0; overflow: hidden; }
+.morphing-text__sizer { display: inline-block; visibility: hidden; pointer-events: none; }
+.morphing-text__layer {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  text-align: left;
+  transform-origin: 50% 55%;
+  will-change: opacity, filter, transform;
+}
+
+/* Aceternity-inspired liquid glass nav; refractive SVG filter in Chromium,
+   softly frosted translucent glass as a graceful cross-browser fallback. */
+.liquid-glass-surface {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.78);
+  background: rgba(255,255,255,var(--glass-tint, .16));
+  box-shadow: 0 8px 28px rgba(32,34,30,.075), 0 1px 0 rgba(255,255,255,.9) inset, 0 -1px 0 rgba(32,34,30,.035) inset;
+  backdrop-filter: blur(16px) saturate(1.35);
+  -webkit-backdrop-filter: blur(16px) saturate(1.35);
+}
+.liquid-glass__defs { position:absolute; width:0; height:0; overflow:hidden; }
+.liquid-glass__content { position:relative; z-index:1; }
+.liquid-glass__rim {
+  position:absolute;
+  z-index:2;
+  inset:0;
+  border-radius:inherit;
+  padding:1px;
+  pointer-events:none;
+  background: linear-gradient(145deg, rgba(255,255,255,.9), rgba(255,255,255,.12) 38%, rgba(201,67,50,.11) 78%, rgba(255,255,255,.58));
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity:.8;
+}
+.redesign-desktop-nav-glass {
+  flex: 0 1 auto;
+  padding: 4px 10px;
+  transition: box-shadow .35s ease, border-color .35s ease, background .35s ease;
+}
+.redesign-desktop-nav-glass:hover {
+  border-color: rgba(255,255,255,.96);
+  box-shadow: 0 11px 32px rgba(32,34,30,.09), 0 1px 0 rgba(255,255,255,.96) inset;
+}
+.redesign-desktop-nav-glass .redesign-desktop-nav {
+  margin: 0;
+  gap: clamp(18px, 2.4vw, 34px);
+}
+.redesign-desktop-nav-glass .redesign-nav-link { padding: 8px 3px; }
+@media (prefers-reduced-transparency: reduce) {
+  .liquid-glass-surface {
+    background: rgba(247,246,241,.98);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+@media (max-width: 900px) {
+  .redesign-desktop-nav-glass { display:none; }
+}
