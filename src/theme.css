@@ -343,8 +343,8 @@ html.dark .button-accent:hover {
 }
 .animated-theme-toggler[aria-pressed="true"] svg { transform: rotate(180deg); }
 .animated-theme-toggler:disabled {
-  cursor: wait;
-  opacity: .74;
+  cursor: default;
+  opacity: 1;
 }
 ::view-transition-old(root),
 ::view-transition-new(root) {
@@ -487,4 +487,13 @@ html.dark :focus-visible {
   ::view-transition-old(root),
   ::view-transition-new(root) { animation: none !important; }
   .animated-theme-toggler svg { transition: none !important; transform: none !important; }
+}
+
+
+/* High-contrast hover states in the dark palette. */
+html.dark .redesign-hero-art .hero-floating-square { color: #171814; }
+html.dark .editorial-service-row:hover .editorial-service-row__arrow {
+  color: #171814;
+  background: var(--coral);
+  border-color: var(--coral);
 }
