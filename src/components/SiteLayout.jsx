@@ -6,6 +6,7 @@ import { gsap } from '../lib/gsap';
 import { siteConfig } from '../data';
 import GsapMagnetic from './ui/GsapMagnetic';
 import LiquidGlass from './ui/LiquidGlass';
+import AnimatedThemeToggler from './ui/AnimatedThemeToggler';
 
 export function ScrollProgress() {
   const { scrollYProgress } = useScroll();
@@ -106,6 +107,7 @@ export function Header() {
                 </Link>
               </GsapMagnetic>
             </div>
+            <AnimatedThemeToggler className="redesign-theme-toggle" />
             <button
               className="menu-toggle redesign-menu-toggle"
               aria-label={open ? 'Close menu' : 'Open menu'}

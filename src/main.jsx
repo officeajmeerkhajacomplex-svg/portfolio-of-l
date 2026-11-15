@@ -6,6 +6,7 @@ import './tailwind.css';
 import './styles.css';
 import './light-theme.css';
 import './redesign.css';
+import './theme.css';
 
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>

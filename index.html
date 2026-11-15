@@ -3,6 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      try {
+        const savedTheme = localStorage.getItem('liyaqat:theme');
+        if (savedTheme === 'dark') document.documentElement.classList.add('dark');
+        document.documentElement.dataset.theme = savedTheme === 'dark' ? 'dark' : 'light';
+      } catch {
+        document.documentElement.dataset.theme = 'light';
+      }
+    </script>
     <meta name="theme-color" content="#f7f6f1" />
     <meta name="description" content="LIYAQAT — independent digital designer and creative developer building identities, interfaces, motion, and experiences with feeling." />
     <meta property="og:type" content="website" />
