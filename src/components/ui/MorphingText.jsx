@@ -14,6 +14,7 @@ export default function MorphingText({ texts = [], className = '' }) {
     const wrap = wrapRef.current;
     const layers = [firstRef.current, secondRef.current];
     if (!wrap || !layers[0] || !layers[1] || texts.length < 2) return undefined;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
 
     let active = 0;
     let wordIndex = 0;
