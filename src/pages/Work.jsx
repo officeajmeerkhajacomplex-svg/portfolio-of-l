@@ -64,7 +64,7 @@ export default function Work() {
           </button>
         ))}
       </div>
-      <div ref={gridRef} className="project-grid work-grid">
+      <div ref={gridRef} className={`project-grid work-grid${activeFilter === 'All work' ? '' : ' is-filtered'}`}>
         {visibleProjects.map((project, index) => <ProjectCard key={project.slug} project={project} index={index} />)}
       </div>
       {visibleProjects.length === 0 && <p className="work-empty">No projects in this category yet. Check back soon.</p>}

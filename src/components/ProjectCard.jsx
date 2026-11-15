@@ -12,6 +12,8 @@ export default function ProjectCard({ project, index = 0 }) {
   const quickRotateY = useRef(null);
   const quickArtworkX = useRef(null);
   const quickArtworkY = useRef(null);
+  const projectNumber = Number.parseInt(project.number, 10);
+  const cardIdentity = Number.isFinite(projectNumber) && projectNumber > 0 ? projectNumber : index + 1;
 
   useEffect(() => {
     const card = cardRef.current;
@@ -54,7 +56,7 @@ export default function ProjectCard({ project, index = 0 }) {
   }, []);
 
   return (
-    <article ref={cardRef} className={`project-card project-card-${index + 1}`}>
+    <article ref={cardRef} className={`project-card project-card-${cardIdentity}`}>
       <MagicCard className="project-magic-card">
         <Link
           to={`/work/${project.slug}`}

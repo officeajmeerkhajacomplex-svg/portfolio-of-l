@@ -359,8 +359,8 @@ body::before { opacity: .014; }
   box-shadow: 8px 10px 25px rgba(43,45,37,.065), -7px -7px 20px rgba(255,255,255,.78);
   transition: transform .5s var(--ease-editorial), box-shadow .5s ease;
 }
-.project-card:nth-child(2) .project-art-wrap { aspect-ratio: .98; }
-.project-card:nth-child(3) .project-art-wrap { aspect-ratio: 1.1; }
+.project-card-2 .project-art-wrap { aspect-ratio: .98; }
+.project-card-3 .project-art-wrap { aspect-ratio: 1.1; }
 .project-card:hover .project-art-wrap { transform: translateY(-4px); box-shadow: 12px 15px 30px rgba(43,45,37,.105), -7px -7px 20px rgba(255,255,255,.84); }
 .project-card .project-index { top: 17px; left: 18px; color: rgba(32,34,30,.64); font: 8px var(--mono-face); }
 .project-card .project-open { top: 15px; right: 15px; width: 40px; height: 40px; color: var(--ink); background: rgba(255,255,255,.82); border: 1px solid rgba(255,255,255,.9); border-radius: 50%; box-shadow: 0 5px 15px rgba(32,34,30,.09); transition: color .25s ease, background .25s ease, transform .25s var(--ease-editorial); }
@@ -917,8 +917,8 @@ body::before { opacity: .014; }
   .redesign-project-grid .project-card:nth-child(n),
   .redesign-work-page .work-grid .project-card:nth-child(n) { grid-column: auto; margin-top: 0; }
   .project-art-wrap,
-  .project-card:nth-child(2) .project-art-wrap,
-  .project-card:nth-child(3) .project-art-wrap { aspect-ratio: 1.08; }
+  .project-card-2 .project-art-wrap,
+  .project-card-3 .project-art-wrap { aspect-ratio: 1.08; }
   .redesign-work-note { margin-top: 38px; }
   .editorial-manifesto { padding-top: 48px; padding-bottom: 52px; }
   .editorial-manifesto__top,
@@ -989,11 +989,11 @@ body::before { opacity: .014; }
 .redesign-work-page .work-grid {
   row-gap: clamp(72px, 7vw, 112px);
 }
-.redesign-project-grid .project-card:nth-child(4) {
+.redesign-project-grid .project-card-4 {
   grid-column: 3 / span 8;
   margin-top: clamp(16px, 3vw, 42px);
 }
-.redesign-project-grid .project-card:nth-child(4) .project-art-wrap {
+.redesign-project-grid .project-card-4 .project-art-wrap {
   aspect-ratio: 1.28;
 }
 .project-card {
@@ -1020,9 +1020,9 @@ body::before { opacity: .014; }
   transform-origin: center;
   will-change: transform;
 }
-.project-card:nth-child(2) .project-art-wrap { aspect-ratio: .94; }
-.project-card:nth-child(3) .project-art-wrap { aspect-ratio: 1.04; }
-.project-card:nth-child(4) .project-art-wrap { aspect-ratio: 1.14; }
+.project-card-2 .project-art-wrap { aspect-ratio: .94; }
+.project-card-3 .project-art-wrap { aspect-ratio: 1.04; }
+.project-card-4 .project-art-wrap { aspect-ratio: 1.14; }
 .project-card:hover .project-art-wrap {
   box-shadow: 14px 17px 34px rgba(43,45,37,.12), -8px -8px 22px rgba(255,255,255,.9);
 }
@@ -1201,14 +1201,14 @@ html.has-gsap-cursor [role="button"] {
     margin: -28px 0 42px;
     font-size: clamp(18px, 5vw, 24px);
   }
-  .redesign-project-grid .project-card:nth-child(4) { grid-column: auto; margin-top: 0; }
+  .redesign-project-grid .project-card-4 { grid-column: auto; margin-top: 0; }
   .project-card .magic-card { border-radius: 18px; }
   .project-card .magic-card__surface,
   .project-magic-card .project-card-link { border-radius: 17px; }
   .project-art-wrap,
-  .project-card:nth-child(2) .project-art-wrap,
-  .project-card:nth-child(3) .project-art-wrap,
-  .project-card:nth-child(4) .project-art-wrap { aspect-ratio: 1.04; }
+  .project-card-2 .project-art-wrap,
+  .project-card-3 .project-art-wrap,
+  .project-card-4 .project-art-wrap { aspect-ratio: 1.04; }
   .project-meta { padding-top: 16px; gap: 10px; }
   .project-meta h3 { font-size: clamp(25px, 8vw, 34px); }
   .project-meta .project-card__summary { font-size: 11px; }
@@ -1665,4 +1665,24 @@ html.has-smooth-cursor [contenteditable="true"] {
 .morphing-text__animated-word { display: inline-block; white-space: nowrap; }
 @media (prefers-reduced-motion: reduce) {
   .text-animate__segment { filter: none !important; transform: none !important; }
+}
+
+
+/* Filtered work keeps a stable two-column rhythm regardless of which
+   concepts remain visible. Odd final cards sit centred instead of inheriting
+   the asymmetric positions reserved for the complete four-card layout. */
+@media (min-width: 761px) {
+  .redesign-work-page .work-grid.is-filtered {
+    row-gap: clamp(52px, 6vw, 88px);
+  }
+  .redesign-work-page .work-grid.is-filtered .project-card {
+    grid-column: span 6;
+    margin-top: 0;
+  }
+  .redesign-work-page .work-grid.is-filtered .project-card:last-child:nth-child(odd) {
+    grid-column: 4 / span 6;
+  }
+  .redesign-work-page .work-grid.is-filtered .project-art-wrap {
+    aspect-ratio: 1.12;
+  }
 }
